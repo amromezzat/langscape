@@ -1,4 +1,6 @@
-﻿namespace Langscape.Shared.Implementation
+﻿using System;
+
+namespace Langscape.Shared.Implementation
 {
     public class PaginatedResult<T> : Result<T>
     {

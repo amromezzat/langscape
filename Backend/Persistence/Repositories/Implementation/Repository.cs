@@ -21,6 +21,11 @@ namespace Persistence.Repositories.Implementation
             return entity;
         }
 
+        public async Task AddRange(IEnumerable<T> entities)
+        {
+            await _dbContext.Set<T>().AddRangeAsync(entities);
+        }
+
         public Task UpdateAsync(T entity)
         {
             T exist = _dbContext.Set<T>().Find(entity.Id);
@@ -34,7 +39,7 @@ namespace Persistence.Repositories.Implementation
             return Task.CompletedTask;
         }
 
-        public async Task<List<T>> GetAllAsync()
+        public async Task<IReadOnlyList<T>> GetAllAsync()
         {
             return await _dbContext
                 .Set<T>()

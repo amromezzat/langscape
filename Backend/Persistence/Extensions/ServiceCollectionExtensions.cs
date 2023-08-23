@@ -15,7 +15,7 @@ namespace Persistence.Extension
             services.AddRepositories();
         }
 
-        public static void AddDbContext(this IServiceCollection services, IConfiguration configuration)
+        private static void AddDbContext(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<AppDbContext>(opt => {
                 opt.UseSqlite(configuration.GetConnectionString("DefaultConnection"));

@@ -1,4 +1,8 @@
-﻿namespace Langscape.Shared.Implementation
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace Langscape.Shared.Implementation
 {
     public class Result<T> : IResult<T>
     {
@@ -16,6 +20,11 @@
         public void WithException(Exception exception)
         {
             Exception = exception;
+        }
+
+        public Task<Result<T>> ToTask()
+        {
+            return Task.FromResult(this);
         }
 
         public static Result<T> Success()
