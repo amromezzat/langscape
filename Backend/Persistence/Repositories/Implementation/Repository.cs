@@ -4,7 +4,7 @@ using Persistence.Contexts;
 
 namespace Persistence.Repositories.Implementation
 {
-    public class Repository<T> : IRepository<T> where T : class, IAuditableEntity
+    public class Repository<T> : IRepository<T> where T : class, IEntity
     {
         private readonly AppDbContext _dbContext;
 

@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using Domain.Common.Implementation;
+using Domain.Entities;
 
-namespace Domain.Entities
+namespace Application.Features.FlashCards.Queries.Dto
 {
-    public class FlashCardSet : AuditableEntityBase
+    public class FlashCardSetDto
     {
         public string Name { get; set; }
         public ICollection<FlashCardWord> Words { get; set; } = new List<FlashCardWord>();

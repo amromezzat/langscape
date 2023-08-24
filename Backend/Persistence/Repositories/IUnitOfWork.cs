@@ -11,7 +11,7 @@ namespace Persistence.Repositories
         /// Get a certain repository by entity type
         /// </summary>
         /// <typeparam name="T">Entity type</typeparam>
-        IRepository<T> GetRepository<T>() where T : class, IAuditableEntity;
+        IRepository<T> GetRepository<T>() where T : class, IEntity;
 
         /// <summary>
         /// Save all modified entities

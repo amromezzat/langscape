@@ -34,7 +34,7 @@ namespace Persistence.Repositories.Implementation
             return Task.CompletedTask;
         }
 
-        public IRepository<T> GetRepository<T>() where T : class, IAuditableEntity
+        public IRepository<T> GetRepository<T>() where T : class, IEntity
         {
             return new Repository<T>(_dbContext);
         }

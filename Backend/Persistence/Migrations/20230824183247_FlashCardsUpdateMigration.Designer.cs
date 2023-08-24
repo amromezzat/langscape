@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence.Contexts;
 
@@ -10,9 +11,11 @@ using Persistence.Contexts;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230824183247_FlashCardsUpdateMigration")]
+    partial class FlashCardsUpdateMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.10");
@@ -105,9 +108,6 @@ namespace Persistence.Migrations
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AppUserId");
@@ -121,7 +121,7 @@ namespace Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("FlashCardSetId")
+                    b.Property<Guid?>("SetId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Translation")
@@ -132,7 +132,7 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FlashCardSetId");
+                    b.HasIndex("SetId");
 
                     b.ToTable("FlashCardWords");
                 });
@@ -274,9 +274,11 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.FlashCardWord", b =>
                 {
-                    b.HasOne("Domain.Entities.FlashCardSet", null)
+                    b.HasOne("Domain.Entities.FlashCardSet", "Set")
                         .WithMany("Words")
-                        .HasForeignKey("FlashCardSetId");
+                        .HasForeignKey("SetId");
+
+                    b.Navigation("Set");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
