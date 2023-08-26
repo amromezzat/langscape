@@ -40,12 +40,18 @@ namespace Persistence.Repositories
         /// Modify an existing entity
         /// </summary>
         /// <param name="entity">Modifiable entity</param>
-        Task UpdateAsync(T entity);
+        void Update(T entity);
 
         /// <summary>
         /// Delete an existing entity
         /// </summary>
         /// <param name="entity">To be deleted entity</param>
-        Task DeleteAsync(T entity);
+        void Delete(T entity);
+
+        /// <summary>
+        /// Remove a range of existing entity
+        /// </summary>
+        /// <param name="entity">To be deleted entities</param>
+        void DeleteRange(IEnumerable<T> entities);
     }
 }

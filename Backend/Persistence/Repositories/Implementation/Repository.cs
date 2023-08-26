@@ -26,17 +26,20 @@ namespace Persistence.Repositories.Implementation
             await _dbContext.Set<T>().AddRangeAsync(entities);
         }
 
-        public Task UpdateAsync(T entity)
+        public void Update(T entity)
         {
             T exist = _dbContext.Set<T>().Find(entity.Id);
             _dbContext.Entry(exist).CurrentValues.SetValues(entity);
-            return Task.CompletedTask;
         }
 
-        public Task DeleteAsync(T entity)
+        public void Delete(T entity)
         {
             _dbContext.Set<T>().Remove(entity);
-            return Task.CompletedTask;
+        }
+
+        public void DeleteRange(IEnumerable<T> entities)
+        {
+            _dbContext.Set<T>().RemoveRange(entities);
         }
 
         public async Task<IReadOnlyList<T>> GetAllAsync()

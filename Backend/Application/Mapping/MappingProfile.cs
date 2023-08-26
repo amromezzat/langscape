@@ -7,12 +7,14 @@ namespace Application.Mapping
 {
     public class MappingProfile : Profile
     {
-        private const int PreviewWordsCount = 5;
-
         public MappingProfile()
         {
+            var maximumNumberOfWords = int.MaxValue;
+
+            CreateMap<FlashCardWord, FlashCardWordDto>();
+
             CreateMap<FlashCardSet, FlashCardSetDto>()
-                .ForMember(d => d.Words, o => o.MapFrom(s => s.Words.Take(PreviewWordsCount)));
+                .ForMember(d => d.Words, o => o.MapFrom(s => s.Words.Take(maximumNumberOfWords)));
         }
     }
 }

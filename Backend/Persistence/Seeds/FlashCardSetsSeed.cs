@@ -16,6 +16,7 @@ namespace Persistence.Seeds
                 {
                     new FlashCardSet()
                     {
+                        Name = "First set",
                         Words = new FlashCardWord[] 
                         {
                             new FlashCardWord
@@ -27,11 +28,32 @@ namespace Persistence.Seeds
                             {
                                 Word = "Kot",
                                 Translation = "Cat"
+                            },
+                            new FlashCardWord
+                            {
+                                Word = "Dzien dobry",
+                                Translation = "Good morning"
+                            },
+                            new FlashCardWord
+                            {
+                                Word = "Mały",
+                                Translation = "Small"
+                            },
+                            new FlashCardWord
+                            {
+                                Word = "Duży",
+                                Translation = "Big"
+                            },
+                            new FlashCardWord
+                            {
+                                Word = "Proszę",
+                                Translation = "Please"
                             }
                         }
                     },
                     new FlashCardSet()
                     {
+                        Name = "Set 2",
                         Words = new FlashCardWord[]
                         {
                             new FlashCardWord
@@ -41,8 +63,8 @@ namespace Persistence.Seeds
                             },
                             new FlashCardWord
                             {
-                                Word = "Old",
-                                Translation = "Stary"
+                                Word = "Stary",
+                                Translation = "Old"
                             },
                             new FlashCardWord
                             {

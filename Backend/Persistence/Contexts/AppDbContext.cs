@@ -12,5 +12,15 @@ namespace Persistence.Contexts
         public AppDbContext(DbContextOptions options) : base(options)
         {
         }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.Entity<FlashCardWord>()
+                .HasOne(a => a.Set)
+                .WithMany(c => c.Words)
+                .OnDelete(DeleteBehavior.Cascade);
+        }
     }
 }

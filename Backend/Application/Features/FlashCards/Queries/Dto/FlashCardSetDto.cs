@@ -1,11 +1,12 @@
+using System;
 using System.Collections.Generic;
-using Domain.Entities;
 
 namespace Application.Features.FlashCards.Queries.Dto
 {
     public class FlashCardSetDto
     {
+        public Guid Id { get; set; }
         public string Name { get; set; }
-        public ICollection<FlashCardWord> Words { get; set; } = new List<FlashCardWord>();
+        public ICollection<FlashCardWordDto> Words { get; set; } = new List<FlashCardWordDto>();
     }
 }

@@ -14,6 +14,7 @@ namespace Application.Features.FlashCards.Commands
 {
     public class GetFlashCardsQuery : IRequest<Result<IReadOnlyList<FlashCardSetDto>>>
     {
+        public int MaximumNumberOfWords { get; set; }
     }
 
     internal class GetFlashCardsQueryHandler : IRequestHandler<GetFlashCardsQuery, Result<IReadOnlyList<FlashCardSetDto>>>
@@ -32,7 +33,7 @@ namespace Application.Features.FlashCards.Commands
         {
             var flashCards = await _unitOfWork.GetRepository<FlashCardSet>()
                     .Entities
-                    .ProjectTo<FlashCardSetDto>(_mapper.ConfigurationProvider)
+                    .ProjectTo<FlashCardSetDto>(_mapper.ConfigurationProvider, new { maximumNumberOfWords = request.MaximumNumberOfWords })
                     .ToListAsync(cancellationToken);
 
             return await Result<IReadOnlyList<FlashCardSetDto>>.Success(flashCards).ToTask();
