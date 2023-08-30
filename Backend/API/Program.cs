@@ -1,6 +1,5 @@
 using Application.Extensions;
 using Persistence.Extension;
-using Infrastructure.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -11,6 +10,10 @@ using Persistence.Seeds;
 using System;
 using Microsoft.Extensions.Logging;
 using System.Threading;
+using Microsoft.AspNetCore.Identity;
+using Domain.Entities;
+using Infrastructure.Security.Seeds;
+using Infrastructure.Security.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +21,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddApplicationLayer();
 builder.Services.AddPersistenceLayer(builder.Configuration);
-builder.Services.AddInfrastructureLayer();
+builder.Services.AddInfrastructureLayer(builder.Configuration);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -36,6 +39,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
@@ -56,6 +60,9 @@ async void MigrateDatabase()
         await context.Database.MigrateAsync();
         await FlashCardSetsSeed.SeedFlashCardSets(unitOfWork);
         await unitOfWork.Save(CancellationToken.None);
+
+        var userManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
+        await UsersSeed.SeedUsers(userManager);
     }
     catch (Exception ex)
     {
