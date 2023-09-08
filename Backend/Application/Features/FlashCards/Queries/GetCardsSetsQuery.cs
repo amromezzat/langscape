@@ -12,12 +12,12 @@ using Persistence.Repositories;
 
 namespace Application.Features.FlashCards.Commands
 {
-    public class GetFlashCardsQuery : IRequest<Result<IReadOnlyList<FlashCardSetDto>>>
+    public class GetFlashCardsQuery : IRequest<Result<IReadOnlyList<GetFlashCardsSetDto>>>
     {
         public int MaximumNumberOfWords { get; set; }
     }
 
-    internal class GetFlashCardsQueryHandler : IRequestHandler<GetFlashCardsQuery, Result<IReadOnlyList<FlashCardSetDto>>>
+    internal class GetFlashCardsQueryHandler : IRequestHandler<GetFlashCardsQuery, Result<IReadOnlyList<GetFlashCardsSetDto>>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -29,14 +29,14 @@ namespace Application.Features.FlashCards.Commands
         }
 
 
-        public async Task<Result<IReadOnlyList<FlashCardSetDto>>> Handle(GetFlashCardsQuery request, CancellationToken cancellationToken)
+        public async Task<Result<IReadOnlyList<GetFlashCardsSetDto>>> Handle(GetFlashCardsQuery request, CancellationToken cancellationToken)
         {
             var flashCards = await _unitOfWork.GetRepository<FlashCardSet>()
                     .Entities
-                    .ProjectTo<FlashCardSetDto>(_mapper.ConfigurationProvider, new { maximumNumberOfWords = request.MaximumNumberOfWords })
+                    .ProjectTo<GetFlashCardsSetDto>(_mapper.ConfigurationProvider, new { maximumNumberOfWords = request.MaximumNumberOfWords })
                     .ToListAsync(cancellationToken);
 
-            return await Result<IReadOnlyList<FlashCardSetDto>>.Success(flashCards).ToTask();
+            return await Result<IReadOnlyList<GetFlashCardsSetDto>>.Success(flashCards).ToTask();
         }
     }
 }

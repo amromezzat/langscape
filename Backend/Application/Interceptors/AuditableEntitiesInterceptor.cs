@@ -5,10 +5,11 @@ using Application.Services;
 using Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Persistence.Interceptors;
 
 namespace Application.Interceptors
 {
-    public class AuditableEntitiesInterceptor : SaveChangesInterceptor
+    public class AuditableEntitiesInterceptor : SaveChangesInterceptor, IAuditableEntitiesInterceptor
     {
         private readonly IUserAccessor _userAccessor;
 

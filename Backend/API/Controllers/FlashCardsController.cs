@@ -22,15 +22,21 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IResult<IReadOnlyList<FlashCardSetDto>>>> GetFlashCards(CancellationToken cancellationToken, [FromQuery] int maximumNumberOfWords = 3)
+        public async Task<ActionResult<IResult<IReadOnlyList<GetFlashCardsSetDto>>>> GetCardsSets(CancellationToken cancellationToken, [FromQuery] int maximumNumberOfWords = 3)
         {
             return await _mediator.Send(new GetFlashCardsQuery() { MaximumNumberOfWords = maximumNumberOfWords}, cancellationToken);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<IResult<FlashCardSetDto>>> GetFlashCard(Guid id, CancellationToken cancellationToken)
+        public async Task<ActionResult<IResult<GetFlashCardsSetDto>>> GetCardsSet(CancellationToken cancellationToken, Guid id)
         {
             return await _mediator.Send(new GetFlashCardQuery { SetId = id }, cancellationToken);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<IResult<string>>> CreateCardsSet(CancellationToken cancellationToken, FlashCardSet set)
+        {
+            return await _mediator.Send(new CreateCardsSetCommand {FlashCardSet = set}, cancellationToken);
         }
     }
 }

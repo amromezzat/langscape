@@ -12,12 +12,12 @@ using Persistence.Repositories;
 
 namespace Application.Features.FlashCards.Queries
 {
-    public class GetFlashCardQuery : IRequest<Result<FlashCardSetDto>>
+    public class GetFlashCardQuery : IRequest<Result<GetFlashCardsSetDto>>
     {
         public Guid SetId { get; set; }
     }
 
-    internal class GetFlashCardQueryHandler : IRequestHandler<GetFlashCardQuery, Result<FlashCardSetDto>>
+    internal class GetFlashCardQueryHandler : IRequestHandler<GetFlashCardQuery, Result<GetFlashCardsSetDto>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -28,14 +28,14 @@ namespace Application.Features.FlashCards.Queries
             _mapper = mapper;
         }
 
-        public async Task<Result<FlashCardSetDto>> Handle(GetFlashCardQuery request, CancellationToken cancellationToken)
+        public async Task<Result<GetFlashCardsSetDto>> Handle(GetFlashCardQuery request, CancellationToken cancellationToken)
         {
             var flashCardSet = await _unitOfWork.GetRepository<FlashCardSet>()
                     .Entities
-                    .ProjectTo<FlashCardSetDto>(_mapper.ConfigurationProvider)
+                    .ProjectTo<GetFlashCardsSetDto>(_mapper.ConfigurationProvider)
                     .FirstOrDefaultAsync(e => e.Id == request.SetId);
 
-            return await Result<FlashCardSetDto>.Success(flashCardSet).ToTask();
+            return await Result<GetFlashCardsSetDto>.Success(flashCardSet).ToTask();
         }
     }
 }

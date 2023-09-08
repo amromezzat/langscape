@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace Application.Features.FlashCards.Queries.Dto
 {
-    public class FlashCardSetDto
+    public class GetFlashCardsSetDto
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public ICollection<FlashCardWordDto> Words { get; set; } = new List<FlashCardWordDto>();
+        public ICollection<GetFlashCardsWordDto> Words { get; set; } = new List<GetFlashCardsWordDto>();
     }
 }

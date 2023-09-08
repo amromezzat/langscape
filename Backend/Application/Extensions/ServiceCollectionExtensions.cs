@@ -1,6 +1,9 @@
 using System.Reflection;
+using Application.Interceptors;
 using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
+using Persistence.Interceptors;
 
 namespace Application.Extensions
 {
@@ -11,6 +14,7 @@ namespace Application.Extensions
             services.AddAutoMapper();
             services.AddMediator();
             services.AddValidators();
+            services.AddInterceptors();
         }
 
         private static void AddAutoMapper(this IServiceCollection services)
@@ -25,7 +29,13 @@ namespace Application.Extensions
 
         private static void AddValidators(this IServiceCollection services)
         {
+            services.AddFluentValidationAutoValidation();
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-        }    
+        }
+
+        private static void AddInterceptors(this IServiceCollection services)
+        {
+            services.AddScoped<IAuditableEntitiesInterceptor, AuditableEntitiesInterceptor>();
+        }
     }
 }
