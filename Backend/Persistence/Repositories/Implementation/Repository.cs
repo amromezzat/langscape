@@ -65,7 +65,10 @@ namespace Persistence.Repositories.Implementation
         public async Task DeleteAsync(Guid id)
         {
             T dbEntry = await _dbContext.Set<T>().FindAsync(id);
-            Delete(dbEntry);
+            if (dbEntry != null) 
+            {
+                Delete(dbEntry);
+            }
         }
 
         public void DeleteRange(IEnumerable<T> entities)
