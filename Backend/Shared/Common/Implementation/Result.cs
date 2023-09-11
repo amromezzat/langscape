@@ -27,23 +27,21 @@ namespace Langscape.Shared.Implementation
             return Task.FromResult(this);
         }
 
-        public static Result<T> Success()
+        public static Result<T> Success(params string[] messages)
         {
             return new Result<T> 
             { 
                 Succeeded = true,
-                Code = 200
+                Code = 200,
+                Messages = messages ?? new string[0]
             };
         }
 
         public static Result<T> Success(T data, params string[] messages)
         {
-            return new Result<T>
-            {
-                Succeeded = true,
-                Messages = messages ?? new string[0],
-                Data = data
-            };
+            var result = Success(messages);
+            result.Data = data;
+            return result;
         }
 
         public static Result<T> Failure(params string[] messages)

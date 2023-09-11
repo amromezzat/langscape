@@ -11,12 +11,12 @@ namespace Application.Features.FlashCards.Commands
 {
     public class CreateCardsSetCommand : IRequest<Result<string>>
     {
-        public FlashCardSet FlashCardSet { get; set; }
+        public FlashCardsSet FlashCardSet { get; set; }
     }
 
-    public class CommandValidator : AbstractValidator<CreateCardsSetCommand>
+    public class CreateCardsSetCommandValidator : AbstractValidator<CreateCardsSetCommand>
     {
-        public CommandValidator()
+        public CreateCardsSetCommandValidator()
         {
             RuleFor(x => x.FlashCardSet).SetValidator(new CreateCardsSetValidator());
         }
@@ -33,7 +33,7 @@ namespace Application.Features.FlashCards.Commands
 
         public async Task<Result<string>> Handle(CreateCardsSetCommand command, CancellationToken cancellationToken)
         {
-            await _unitOfWork.GetRepository<FlashCardSet>()
+            await _unitOfWork.GetRepository<FlashCardsSet>()
                 .AddAsync(command.FlashCardSet);
 
             await _unitOfWork.Save(cancellationToken);

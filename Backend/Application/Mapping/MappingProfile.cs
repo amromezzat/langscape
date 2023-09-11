@@ -11,9 +11,9 @@ namespace Application.Mapping
         {
             var maximumNumberOfWords = int.MaxValue;
 
-            CreateMap<FlashCardWord, GetFlashCardsWordDto>();
+            CreateMap<FlashCardsWord, GetFlashCardsWordDto>();
 
-            CreateMap<FlashCardSet, GetFlashCardsSetDto>()
+            CreateMap<FlashCardsSet, GetFlashCardsSetDto>()
                 .ForMember(d => d.Words, o => o.MapFrom(s => s.Words.Take(maximumNumberOfWords)));
         }
     }

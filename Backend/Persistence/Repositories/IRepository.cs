@@ -17,7 +17,7 @@ namespace Persistence.Repositories
         /// Get entity by id
         /// </summary>
         /// <param name="id">Entity id</param>
-        Task<T> GetByIdAsync(int id);
+        Task<T> GetByIdAsync(Guid id);
 
         /// <summary>
         /// Get all entities of type <typeparamref name="T"/>
@@ -34,13 +34,24 @@ namespace Persistence.Repositories
         /// Add a range of entities to the repository
         /// </summary>
         /// <param name="entities">Collection of entities</param>
-        Task AddRange(IEnumerable<T> entities);
+        Task AddRangeAsync(IEnumerable<T> entities);
 
         /// <summary>
         /// Modify an existing entity
         /// </summary>
         /// <param name="entity">Modifiable entity</param>
-        void Update(T entity);
+        Task UpdateAsync(T entity);
+
+        /// <summary>
+        /// Modify a range of existing entities
+        /// </summary>
+        /// <param name="entities">Collection of entities</param>
+        Task UpdateRangeAsync(IEnumerable<T> entities);
+
+        /// <summary>
+        /// Modify an existing entity
+        /// </summary>
+        /// <param name="entity">Modifiable entity</param>
 
         /// <summary>
         /// Delete an existing entity
@@ -49,9 +60,21 @@ namespace Persistence.Repositories
         void Delete(T entity);
 
         /// <summary>
+        /// Delete an existing entity
+        /// </summary>
+        /// <param name="entity">Id of the entity</param>
+        Task DeleteAsync(Guid id);
+
+        /// <summary>
         /// Remove a range of existing entity
         /// </summary>
         /// <param name="entity">To be deleted entities</param>
         void DeleteRange(IEnumerable<T> entities);
+
+        /// <summary>
+        /// Remove a range of existing entity
+        /// </summary>
+        /// <param name="entity">Id of entities</param>
+        Task DeleteRangeAsync(IEnumerable<Guid> ids);
     }
 }

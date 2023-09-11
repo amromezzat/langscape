@@ -9,8 +9,8 @@ namespace Persistence.Contexts
     {
         private readonly IAuditableEntitiesInterceptor _auditableEntitiesInterceptor;
 
-        public DbSet<FlashCardWord> FlashCardWords { get; set; }
-        public DbSet<FlashCardSet> FlashCardSets { get; set; }
+        public DbSet<FlashCardsWord> FlashCardWords { get; set; }
+        public DbSet<FlashCardsSet> FlashCardSets { get; set; }
 
         public AppDbContext(DbContextOptions options, IAuditableEntitiesInterceptor auditableEntitiesInterceptor) : base(options)
         {
@@ -21,7 +21,7 @@ namespace Persistence.Contexts
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<FlashCardWord>()
+            builder.Entity<FlashCardsWord>()
                 .HasOne(a => a.Set)
                 .WithMany(c => c.Words)
                 .OnDelete(DeleteBehavior.Cascade);

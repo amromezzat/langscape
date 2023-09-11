@@ -3,9 +3,9 @@ using Domain.Common.Implementation;
 
 namespace Domain.Entities
 {
-    public class FlashCardSet : AuditableEntityBase
+    public class FlashCardsSet : AuditableEntityBase
     {
         public string Name { get; set; }
-        public ICollection<FlashCardWord> Words { get; set; } = new List<FlashCardWord>();
+        public ICollection<FlashCardsWord> Words { get; set; } = new List<FlashCardsWord>();
     }
 }

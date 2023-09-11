@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace Application.Features.FlashCards.Validators
 {
-    public class CreateCardsSetValidator : AbstractValidator<FlashCardSet>
+    public class CreateCardsSetValidator : AbstractValidator<FlashCardsSet>
     {
         public CreateCardsSetValidator()
         {

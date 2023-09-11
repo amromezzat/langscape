@@ -12,26 +12,26 @@ using Persistence.Repositories;
 
 namespace Application.Features.FlashCards.Commands
 {
-    public class GetFlashCardsQuery : IRequest<Result<IReadOnlyList<GetFlashCardsSetDto>>>
+    public class GetCardsSetsQuery : IRequest<Result<IReadOnlyList<GetFlashCardsSetDto>>>
     {
         public int MaximumNumberOfWords { get; set; }
     }
 
-    internal class GetFlashCardsQueryHandler : IRequestHandler<GetFlashCardsQuery, Result<IReadOnlyList<GetFlashCardsSetDto>>>
+    internal class GetCardsSetsQueryHandler : IRequestHandler<GetCardsSetsQuery, Result<IReadOnlyList<GetFlashCardsSetDto>>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public GetFlashCardsQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public GetCardsSetsQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
 
-        public async Task<Result<IReadOnlyList<GetFlashCardsSetDto>>> Handle(GetFlashCardsQuery request, CancellationToken cancellationToken)
+        public async Task<Result<IReadOnlyList<GetFlashCardsSetDto>>> Handle(GetCardsSetsQuery request, CancellationToken cancellationToken)
         {
-            var flashCards = await _unitOfWork.GetRepository<FlashCardSet>()
+            var flashCards = await _unitOfWork.GetRepository<FlashCardsSet>()
                     .Entities
                     .ProjectTo<GetFlashCardsSetDto>(_mapper.ConfigurationProvider, new { maximumNumberOfWords = request.MaximumNumberOfWords })
                     .ToListAsync(cancellationToken);

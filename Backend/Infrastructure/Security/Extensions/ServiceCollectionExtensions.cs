@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Infrastructure.Security.Authorization;
 
 namespace Infrastructure.Security.Extensions
 {
@@ -63,6 +64,15 @@ namespace Infrastructure.Security.Extensions
                 var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
                 opt.Filters.Add(new AuthorizeFilter(policy));
             });
+
+            services.AddAuthorization(opt => 
+            {
+                opt.AddPolicy(nameof(IsOwnerRequirement<FlashCardsSet>), policy => 
+                {
+                    policy.Requirements.Add(new IsOwnerRequirement<FlashCardsSet>());
+                });
+            });
+            services.AddTransient<IAuthorizationHandler, IsOwnerRequirementHandler<FlashCardsSet>>();
         }
     }
 }

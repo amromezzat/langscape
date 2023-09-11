@@ -8,65 +8,65 @@ namespace Persistence.Seeds
     {
         public static async Task SeedFlashCardSets(IUnitOfWork unitOfWork)
         {
-            var flashCardsRepository = unitOfWork.GetRepository<FlashCardSet>();
+            var flashCardsRepository = unitOfWork.GetRepository<FlashCardsSet>();
 
             if(!await flashCardsRepository.Entities.AnyAsync())
             {
-                var flashCards = new FlashCardSet[]
+                var flashCards = new FlashCardsSet[]
                 {
-                    new FlashCardSet()
+                    new FlashCardsSet()
                     {
                         Name = "First set",
-                        Words = new FlashCardWord[] 
+                        Words = new FlashCardsWord[] 
                         {
-                            new FlashCardWord
+                            new FlashCardsWord
                             {
                                 Word = "Czarny",
                                 Translation = "Black"
                             },
-                            new FlashCardWord
+                            new FlashCardsWord
                             {
                                 Word = "Kot",
                                 Translation = "Cat"
                             },
-                            new FlashCardWord
+                            new FlashCardsWord
                             {
                                 Word = "Dzien dobry",
                                 Translation = "Good morning"
                             },
-                            new FlashCardWord
+                            new FlashCardsWord
                             {
                                 Word = "Mały",
                                 Translation = "Small"
                             },
-                            new FlashCardWord
+                            new FlashCardsWord
                             {
                                 Word = "Duży",
                                 Translation = "Big"
                             },
-                            new FlashCardWord
+                            new FlashCardsWord
                             {
                                 Word = "Proszę",
                                 Translation = "Please"
                             }
                         }
                     },
-                    new FlashCardSet()
+                    new FlashCardsSet()
                     {
                         Name = "Set 2",
-                        Words = new FlashCardWord[]
+                        Words = new FlashCardsWord[]
                         {
-                            new FlashCardWord
+                            new FlashCardsWord
                             {
                                 Word = "Ulcie",
                                 Translation = "Street"
                             },
-                            new FlashCardWord
+                            new FlashCardsWord
                             {
                                 Word = "Stary",
                                 Translation = "Old"
                             },
-                            new FlashCardWord
+                            new FlashCardsWord
                             {
                                 Word = "Nowy",
                                 Translation = "New"
@@ -75,7 +75,7 @@ namespace Persistence.Seeds
                     }
                 };
 
-                await flashCardsRepository.AddRange(flashCards);
+                await flashCardsRepository.AddRangeAsync(flashCards);
             }
         }
     }

@@ -15,33 +15,6 @@ namespace Persistence.Repositories.Implementation
             _dbContext = dbContext;
         }
 
-        public async Task<T> AddAsync(T entity)
-        {
-            await _dbContext.Set<T>().AddAsync(entity);
-            return entity;
-        }
-
-        public async Task AddRange(IEnumerable<T> entities)
-        {
-            await _dbContext.Set<T>().AddRangeAsync(entities);
-        }
-
-        public void Update(T entity)
-        {
-            T exist = _dbContext.Set<T>().Find(entity.Id);
-            _dbContext.Entry(exist).CurrentValues.SetValues(entity);
-        }
-
-        public void Delete(T entity)
-        {
-            _dbContext.Set<T>().Remove(entity);
-        }
-
-        public void DeleteRange(IEnumerable<T> entities)
-        {
-            _dbContext.Set<T>().RemoveRange(entities);
-        }
-
         public async Task<IReadOnlyList<T>> GetAllAsync()
         {
             return await _dbContext
@@ -49,9 +22,67 @@ namespace Persistence.Repositories.Implementation
                 .ToListAsync();
         }
 
-        public async Task<T> GetByIdAsync(int id)
+        public async Task<T> GetByIdAsync(Guid id)
         {
             return await _dbContext.Set<T>().FindAsync(id);
+        }
+
+        public async Task<T> AddAsync(T entity)
+        {
+            await _dbContext.Set<T>().AddAsync(entity);
+            return entity;
+        }
+
+        public async Task AddRangeAsync(IEnumerable<T> entities)
+        {
+            await _dbContext.Set<T>().AddRangeAsync(entities);
+        }
+
+        public async Task UpdateAsync(T entity)
+        {
+            T dbEntry = await GetByIdAsync(entity.Id);
+            if (dbEntry != null) 
+            {
+                UpdateDbEntry(dbEntry, entity);
+            }
+        }
+
+        public async Task UpdateRangeAsync(IEnumerable<T> entities)
+        {
+            var updateTasks = new List<Task>();
+            foreach (var entity in entities)
+            {
+                updateTasks.Add(UpdateAsync(entity));
+            }
+            await Task.WhenAll(updateTasks);
+        }
+
+        public void Delete(T entity)
+        {
+            _dbContext.Set<T>().Remove(entity);
+        }
+
+        public async Task DeleteAsync(Guid id)
+        {
+            T dbEntry = await _dbContext.Set<T>().FindAsync(id);
+            Delete(dbEntry);
+        }
+
+        public void DeleteRange(IEnumerable<T> entities)
+        {
+            _dbContext.Set<T>().RemoveRange(entities);
+        }
+
+        public async Task DeleteRangeAsync(IEnumerable<Guid> ids)
+        {
+            ids = ids.ToArray();
+            var dbEntries = await _dbContext.Set<T>().Where(entry => ids.Contains(entry.Id)).ToArrayAsync(); 
+            DeleteRange(dbEntries);
+        }
+
+        private void UpdateDbEntry(T entry, T newEntry)
+        {
+            _dbContext.Entry(entry).CurrentValues.SetValues(newEntry);
         }
     }
 }
