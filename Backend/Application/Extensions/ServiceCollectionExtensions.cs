@@ -1,5 +1,5 @@
 using System.Reflection;
-using Application.Interceptors;
+using Application.Interceptors.Impl;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;

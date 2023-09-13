@@ -1,4 +1,5 @@
 using System;
+using Domain.Entities;
 
 namespace Domain
 {
@@ -8,9 +9,14 @@ namespace Domain
     public interface IAuditableEntity : IEntity
     {
         /// <summary>
-        /// Creator id
+        /// Id of the user that created the entity
         /// </summary>
-        string CreatedBy { get; set; }
+        string CreatedById { get; set; }
+
+        /// <summary>
+        /// User that created the entity
+        /// </summary>
+        AppUser CreatedBy { get; set; }
 
         /// <summary>
         /// Creation timestamp
@@ -18,9 +24,14 @@ namespace Domain
         DateTime CreatedAt { get; set; }
 
         /// <summary>
-        /// Modifier id
+        /// Id of the user that Modified the entity
         /// </summary>
-        string ModifiedBy { get; set; }
+        string ModifiedById { get; set; }
+
+        /// <summary>
+        /// Last user that modified the entity
+        /// </summary>
+        AppUser ModifiedBy { get; set; }
 
         /// <summary>
         /// Modification timestamp

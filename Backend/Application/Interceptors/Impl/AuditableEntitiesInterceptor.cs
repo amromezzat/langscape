@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Persistence.Interceptors;
 
-namespace Application.Interceptors
+namespace Application.Interceptors.Impl
 {
     public class AuditableEntitiesInterceptor : SaveChangesInterceptor, IAuditableEntitiesInterceptor
     {
@@ -53,13 +53,13 @@ namespace Application.Interceptors
             {
                 if (entry.State == EntityState.Added)
                 {
-                    entry.Entity.CreatedBy = _userAccessor.GetUserId();
+                    entry.Entity.CreatedById = _userAccessor.GetUserId();
                     entry.Entity.CreatedAt = DateTime.UtcNow;
                 }
 
                 if (entry.State == EntityState.Modified)
                 {
-                    entry.Entity.ModifiedBy = _userAccessor.GetUserId();
+                    entry.Entity.ModifiedById = _userAccessor.GetUserId();
                     entry.Entity.ModifiedAt = DateTime.UtcNow;
                 }
             }

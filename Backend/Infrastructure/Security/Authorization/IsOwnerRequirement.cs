@@ -41,7 +41,7 @@ namespace Infrastructure.Security.Authorization
             var entityId = Guid.Parse(_httpContext.HttpContext?.Request.RouteValues.SingleOrDefault(x => x.Key == "id").Value?.ToString());
 
             var entity = await _unitOfWork.GetRepository<T>().GetByIdAsync(entityId);
-            bool isOwner = entity?.CreatedBy == userId;
+            bool isOwner = entity?.CreatedById == userId;
 
             if (isOwner)
             {

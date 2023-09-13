@@ -12,7 +12,6 @@ using Langscape.Shared;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Persistence.Repositories.Implementation;
 
 namespace API.Controllers
 {
@@ -45,7 +44,7 @@ namespace API.Controllers
 
         [Authorize(Policy = nameof(IsOwnerRequirement<FlashCardsSet>))]
         [HttpPut("{id}")]
-        public async Task<ActionResult<IResult<UnitOfWork>>> EditCardsSet(CancellationToken cancellationToken, Guid id, EditFlashCardsSetDto set)
+        public async Task<ActionResult<IResult<Unit>>> EditCardsSet(CancellationToken cancellationToken, Guid id, EditFlashCardsSetDto set)
         {
             set.Id = id;
             return await _mediator.Send(new EditCardsSetCommand { FlashCardSet = set }, cancellationToken);
@@ -53,7 +52,7 @@ namespace API.Controllers
 
         [Authorize(Policy = nameof(IsOwnerRequirement<FlashCardsSet>))]
         [HttpDelete("{id}")]
-        public async Task<ActionResult<IResult<UnitOfWork>>> DeleteCardsSet(CancellationToken cancellationToken, Guid id)
+        public async Task<ActionResult<IResult<Unit>>> DeleteCardsSet(CancellationToken cancellationToken, Guid id)
         {
             return await _mediator.Send(new DeleteCardsSetCommand { Id = id }, cancellationToken);
         }

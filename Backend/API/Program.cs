@@ -1,12 +1,9 @@
 using Application.Extensions;
-using Persistence.Extension;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Repositories;
-using Persistence.Seeds;
 using System;
 using Microsoft.Extensions.Logging;
 using System.Threading;
@@ -14,6 +11,9 @@ using Microsoft.AspNetCore.Identity;
 using Domain.Entities;
 using Infrastructure.Security.Seeds;
 using Infrastructure.Security.Extensions;
+using Persistence.Extension;
+using Persistence.Contexts;
+using Persistence.Seeds;
 
 var builder = WebApplication.CreateBuilder(args);
 
