@@ -26,7 +26,7 @@ namespace Persistence.Repositories.Implementation
                 .ToListAsync();
         }
 
-        public async Task<T> GetByIdAsync(Guid id)
+        public async Task<T> GetByIdAsync(params object[] id)
         {
             return await _dbContext.Set<T>().FindAsync(id);
         }
@@ -66,9 +66,9 @@ namespace Persistence.Repositories.Implementation
             _dbContext.Set<T>().Remove(entity);
         }
 
-        public async Task DeleteAsync(Guid id)
+        public async Task DeleteByIdAsync(params object[] id)
         {
-            T dbEntry = await _dbContext.Set<T>().FindAsync(id);
+            T dbEntry = await GetByIdAsync(id);
             if (dbEntry != null) 
             {
                 Delete(dbEntry);
@@ -80,7 +80,7 @@ namespace Persistence.Repositories.Implementation
             _dbContext.Set<T>().RemoveRange(entities);
         }
 
-        public async Task DeleteRangeAsync(IEnumerable<Guid> ids)
+        public async Task DeleteRangeByIdAsync(IEnumerable<Guid> ids)
         {
             ids = ids.ToArray();
             var dbEntries = await _dbContext.Set<T>().Where(entry => ids.Contains(entry.Id)).ToArrayAsync(); 

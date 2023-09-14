@@ -49,7 +49,7 @@ namespace Application.Features.FlashCards.Commands
             var wordsRepo = _unitOfWork.GetRepository<FlashCardsWord>();
             await wordsRepo.AddRangeAsync(command.FlashCardSet.CreatedWords);
             await wordsRepo.UpdateRangeAsync(command.FlashCardSet.UpdatedWords);
-            await wordsRepo.DeleteRangeAsync(command.FlashCardSet.DeletedWords);
+            await wordsRepo.DeleteRangeByIdAsync(command.FlashCardSet.DeletedWords);
 
             await _unitOfWork.Save(cancellationToken);
 

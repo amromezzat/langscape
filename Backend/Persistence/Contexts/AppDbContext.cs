@@ -13,6 +13,7 @@ namespace Persistence.Contexts
 
         public DbSet<FlashCardsWord> FlashCardWords { get; set; }
         public DbSet<FlashCardsSet> FlashCardSets { get; set; }
+        public DbSet<FlashCardSetFavorite> FlashCardSetFavorites { get; set; }
 
         public AppDbContext(DbContextOptions options, IAuditableEntitiesInterceptor auditableEntitiesInterceptor) : base(options)
         {
@@ -23,12 +24,39 @@ namespace Persistence.Contexts
         {
             base.OnModelCreating(builder);
 
+            AddAuditableEntityIndices(builder);
+
             builder.Entity<FlashCardsWord>()
-                .HasOne(a => a.Set)
-                .WithMany(c => c.Words)
+                .HasOne(word => word.Set)
+                .WithMany(set => set.Words)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            foreach(var derivedType in typeof(IAuditableEntity).GetImplementingClasses()) 
+            builder.Entity<FlashCardSetFavorite>(favorite => 
+            {
+                favorite.HasKey(key => new {key.AppUserId, key.SetId});
+
+                favorite.HasOne(favorite => favorite.AppUser)
+                    .WithMany()
+                    .HasForeignKey(favorite => favorite.AppUserId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                favorite.HasOne(favorite => favorite.Set)
+                    .WithMany()
+                    .HasForeignKey(favorite => favorite.SetId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+
+            optionsBuilder.AddInterceptors(_auditableEntitiesInterceptor);
+        }
+
+        private static void AddAuditableEntityIndices(ModelBuilder builder)
+        {
+            foreach (var derivedType in typeof(IAuditableEntity).GetImplementingClasses())
             {
                 builder.Entity(derivedType)
                     .HasOne(nameof(IAuditableEntity.CreatedBy))
@@ -42,13 +70,6 @@ namespace Persistence.Contexts
                     .HasForeignKey(nameof(IAuditableEntity.ModifiedById))
                     .OnDelete(DeleteBehavior.SetNull);
             }
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            base.OnConfiguring(optionsBuilder);
-
-            optionsBuilder.AddInterceptors(_auditableEntitiesInterceptor);
         }
     }
 }

@@ -21,7 +21,7 @@ namespace Persistence.Repositories
         /// Get entity by id
         /// </summary>
         /// <param name="id">Entity id</param>
-        Task<T> GetByIdAsync(Guid id);
+        Task<T> GetByIdAsync(params object[] id);
 
         /// <summary>
         /// Get all entities of type <typeparamref name="T"/>
@@ -67,7 +67,7 @@ namespace Persistence.Repositories
         /// Delete an existing entity
         /// </summary>
         /// <param name="entity">Id of the entity</param>
-        Task DeleteAsync(Guid id);
+        Task DeleteByIdAsync(params object[] id);
 
         /// <summary>
         /// Remove a range of existing entity
@@ -79,6 +79,6 @@ namespace Persistence.Repositories
         /// Remove a range of existing entity
         /// </summary>
         /// <param name="entity">Id of entities</param>
-        Task DeleteRangeAsync(IEnumerable<Guid> ids);
+        Task DeleteRangeByIdAsync(IEnumerable<Guid> ids);
     }
 }
