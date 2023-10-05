@@ -14,6 +14,8 @@ using Infrastructure.Security.Extensions;
 using Persistence.Extension;
 using Persistence.Contexts;
 using Persistence.Seeds;
+using API.Extensions;
+using APIExtensions = API.Extensions.ServiceCollectionExtensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +24,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddApplicationLayer();
 builder.Services.AddPersistenceLayer(builder.Configuration);
 builder.Services.AddInfrastructureLayer(builder.Configuration);
+builder.Services.AddApiLayer();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -38,6 +41,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(APIExtensions.CorsPolicyName);
 
 app.UseAuthentication();
 app.UseAuthorization();

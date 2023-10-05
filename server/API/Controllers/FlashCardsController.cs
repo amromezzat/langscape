@@ -23,6 +23,7 @@ namespace API.Controllers
             _mediator = mediator;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IResult<IReadOnlyList<GetFlashCardsSetDto>>>> GetCardsSets(CancellationToken cancellationToken, 
             [FromQuery] string userId, [FromQuery] int maximumNumberOfWords = 3)
@@ -40,7 +41,6 @@ namespace API.Controllers
             return await _mediator.Send(new GetCardsSetQuery { SetId = id }, cancellationToken);
         }
 
-        [Authorize]
         [HttpPost]
         public async Task<ActionResult<IResult<string>>> CreateCardsSet(CancellationToken cancellationToken, FlashCardsSet set)
         {
@@ -62,21 +62,18 @@ namespace API.Controllers
             return await _mediator.Send(new DeleteCardsSetCommand { Id = id }, cancellationToken);
         }
 
-        [Authorize]
         [HttpGet("favorites")]
         public async Task<ActionResult<IResult<IReadOnlyList<GetFlashCardsSetDto>>>> GetCardSetFavorites(CancellationToken cancellationToken, [FromQuery] int maximumNumberOfWords = 3)
         {
             return await _mediator.Send(new GetFavoriteSetsQuery() { MaximumNumberOfWords = maximumNumberOfWords }, cancellationToken);
         }
 
-        [Authorize]
         [HttpPost("favorites/{id}")]
         public async Task<ActionResult<IResult<Unit>>> AddCardSetToFavorite(CancellationToken cancellationToken, Guid id)
         {
             return await _mediator.Send(new AddSetToFavoriteCommand { Id = id }, cancellationToken);
         }
 
-        [Authorize]
         [HttpDelete("favorites/{id}")]
         public async Task<ActionResult<IResult<Unit>>> RemoveCardSetFromFavorite(CancellationToken cancellationToken, Guid id)
         {
