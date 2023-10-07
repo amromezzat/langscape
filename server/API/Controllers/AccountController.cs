@@ -2,6 +2,8 @@ using System.Threading.Tasks;
 using Application.Services;
 using Domain.Entities;
 using Infrastructure.Security.Dto;
+using Langscape.Shared;
+using Langscape.Shared.Implementation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +26,7 @@ namespace API.Controllers
 
         [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
+        public async Task<ActionResult<IResult<UserDto>>> Login(LoginDto loginDto)
         {
             var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == loginDto.Email);
 
@@ -34,10 +36,10 @@ namespace API.Controllers
 
             if(result)
             {
-                return CreateUserObject(user);
+                return Result<UserDto>.Success(CreateUserObject(user));
             }
 
-            return Unauthorized();
+            return Result<UserDto>.Failure("Unauthorized").WithCode(401);
         }
 
         private UserDto CreateUserObject(AppUser user)

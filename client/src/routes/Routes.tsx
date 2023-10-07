@@ -1,13 +1,13 @@
 import { Navigate, RouteObject, createBrowserRouter } from "react-router-dom"
-import App from "../App"
+import Home from "../pages/core/App"
 import NotFound from "../pages/errors/NotFound"
 import ServerError from "../pages/errors/ServerError"
-import FlashCardSetDashboard from "../pages/flashcards/FlashCardSetDashboard"
+import FlashCardSetDashboard from "../pages/features/flashcards/FlashCardSetDashboard"
 
 export const routes: RouteObject[] = [
     {
         path: '/',
-        element: <App />,
+        element: <Home />,
         children: [
             { path: 'flashcards', element: <FlashCardSetDashboard /> },
             { path: 'not-found', element: <NotFound /> },

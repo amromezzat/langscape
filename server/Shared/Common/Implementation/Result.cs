@@ -12,14 +12,18 @@ namespace Langscape.Shared.Implementation
         public Exception Exception { get; private set; }
         public int Code { get; protected set; }
 
-        public void WithCode(int code)
+        public Result<T> WithCode(int code)
         {
             Code = code;
+
+            return this;
         }
 
-        public void WithException(Exception exception)
+        public Result<T> WithException(Exception exception)
         {
             Exception = exception;
+
+            return this;
         }
 
         public Task<Result<T>> ToTask()

@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
-import { FlashCardSet } from "../models/flashCards/flashCardSet";
-import api from "../services/api";
+import { FlashCardSet } from "../../models/flashCards/flashCardSet";
+import { flashCardApi } from "../../services/api/features/flashcards/flashCardApi";
 
 export default class FlashCardStore {
     cardsSets: FlashCardSet[] = [];
@@ -15,7 +15,7 @@ export default class FlashCardStore {
     loadSets = async () => {
         this.setLoading(true);
         try {
-            this.setSets(await api.FlashCards.get());
+            this.setSets(await flashCardApi.get());
             this.setLoading(false);
         }
         catch(error) {

@@ -1,6 +1,6 @@
 import { Card, Label, List } from "semantic-ui-react";
-import '../../styles/CardSetComponent.css';
 import { FlashCardSet } from "../../models/flashCards/flashCardSet";
+import '../../styles/CardSetComponent.css';
 
 interface Props {
     cardSet: FlashCardSet

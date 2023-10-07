@@ -1,8 +1,8 @@
 import { Grid } from "semantic-ui-react";
 import CardSetComponent from "./CardSetComponent";
 import { observer } from "mobx-react-lite";
-import { useStore } from "../../stores/StoreProvider";
 import { useEffect } from "react";
+import { useStore } from "../../stores/core/store";
 
 export default observer (function CardGroupComponent() {
     const {flashCardStore} = useStore();

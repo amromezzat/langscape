@@ -3,21 +3,27 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import 'semantic-ui-css/semantic.min.css'
 import reportWebVitals from './reportWebVitals';
-import { Store, StoreProvider } from './stores/StoreProvider';
-import FlashCardStore from './stores/flashCardStore';
+import { StoreProvider } from './stores/core/StoreProvider';
+import FlashCardStore from './stores/features/flashCardStore';
 import { RouterProvider } from 'react-router-dom';
 import { router } from './routes/Routes';
+import { Store } from './stores/core/store';
+import ModalStore from './stores/common/modalStore';
+import AuthStore from './stores/features/authStore';
 
 const store: Store = {
+  modalStore: new ModalStore(),
+  authStore: new AuthStore(),
   flashCardStore: new FlashCardStore()
 }
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
 root.render(
   <React.StrictMode>
       <StoreProvider store={store}>
-        <RouterProvider router={router}/>
+        <RouterProvider router={router} />
       </StoreProvider>
   </React.StrictMode>
 );
