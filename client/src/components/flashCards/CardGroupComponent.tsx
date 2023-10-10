@@ -6,18 +6,18 @@ import { useStore } from "../../stores/core/store";
 
 export default observer (function CardGroupComponent() {
     const {flashCardStore} = useStore();
-    const {cardsSets, loadSets, loading} = flashCardStore;
+    const {setsRegistery: cardsSets, loadSets, loading} = flashCardStore;
 
     useEffect(() => {
-        if (cardsSets.length === 0) {
+        if (cardsSets.size === 0) {
             loadSets();
         }
       }, [flashCardStore, loadSets, cardsSets]);
     
     return (
         <Grid textAlign={"center"}>
-            {!loading && cardsSets.map((cardSet) => (
-                <Grid.Column mobile={16} tablet={8} computer={4} key={cardSet.id} >
+            {!loading && Array.from(cardsSets).map(([setId, cardSet]) => (
+                <Grid.Column mobile={16} tablet={8} computer={4} key={setId} >
                     <CardSetComponent cardSet={cardSet}/>
                 </Grid.Column>
             ))}

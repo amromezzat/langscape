@@ -8,6 +8,7 @@ namespace Application.Features.FlashCards.Queries.Dto
         public Guid Id { get; set; }
         public string Name { get; set; }
         public ICollection<GetFlashCardsWordDto> Words { get; set; } = new List<GetFlashCardsWordDto>();
+        public bool IsFavorite { get; set; }
 
         public MetaData Meta { get; set; }
 

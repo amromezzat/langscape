@@ -2,7 +2,7 @@ import { ErrorMessage, Form, Formik, FormikHelpers } from "formik"
 import { Button, Header, Label } from "semantic-ui-react"
 import { observer } from "mobx-react-lite"
 import { useStore } from "../../../stores/core/store"
-import ValidatableTextInput from "../../common/form/ValidatableTextInput"
+import ValidatableTextInput from "../../../components/common/form/ValidatableTextInput"
 import { AuthUserForm } from "../../../models/user/authUserForm"
 import { router } from "../../../routes/Routes"
 

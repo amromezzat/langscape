@@ -29,7 +29,8 @@ namespace API.Controllers
             [FromQuery] string userId, [FromQuery] int maximumNumberOfWords = 3)
         {
             return await _mediator.Send(new GetCardsSetsQuery() { 
-                OnlyUserSets = Request.Query.ContainsKey("onlyUserSets"),
+                OnlyUserCreatedSets = Request.Query.ContainsKey("owned"),
+                OnlyUserFavoriteSets = Request.Query.ContainsKey("favorites"),
                 UserId = userId,
                 MaximumNumberOfWords = maximumNumberOfWords
             }, cancellationToken);
@@ -60,12 +61,6 @@ namespace API.Controllers
         public async Task<ActionResult<IResult<Unit>>> DeleteCardsSet(CancellationToken cancellationToken, Guid id)
         {
             return await _mediator.Send(new DeleteCardsSetCommand { Id = id }, cancellationToken);
-        }
-
-        [HttpGet("favorites")]
-        public async Task<ActionResult<IResult<IReadOnlyList<GetFlashCardsSetDto>>>> GetCardSetFavorites(CancellationToken cancellationToken, [FromQuery] int maximumNumberOfWords = 3)
-        {
-            return await _mediator.Send(new GetFavoriteSetsQuery() { MaximumNumberOfWords = maximumNumberOfWords }, cancellationToken);
         }
 
         [HttpPost("favorites/{id}")]

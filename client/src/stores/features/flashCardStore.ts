@@ -1,10 +1,11 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, runInAction, set } from "mobx";
 import { FlashCardSet } from "../../models/flashCards/flashCardSet";
 import { flashCardApi } from "../../services/api/features/flashcards/flashCardApi";
 
 export default class FlashCardStore {
-    cardsSets: FlashCardSet[] = [];
+    setsRegistery = new Map<string, FlashCardSet>();
     loading = false;
+    submittingFavoriteSetsId = new Set<string>();
 
     constructor() {
         makeAutoObservable(this);
@@ -15,16 +16,42 @@ export default class FlashCardStore {
     loadSets = async () => {
         this.setLoading(true);
         try {
-            this.setSets(await flashCardApi.get());
+            this.updateSetsRegistery(await flashCardApi.getCardSets());
             this.setLoading(false);
-        }
-        catch(error) {
+        } catch (error) {
             console.log(error);
             this.setLoading(false);
         }
     }
 
-    private setSets = (sets: FlashCardSet[]) => {
-        this.cardsSets = sets;
+    addFavoriteSet = async (setId: string) => {
+        this.submittingFavoriteSetsId.add(setId);
+        try {
+            await flashCardApi.addFavoriteSet(setId);
+            this.updateSetRegistery({...this.setsRegistery.get(setId), isFavorite: true} as FlashCardSet);
+
+        } catch (error) {
+            console.log(error);
+        }
+        runInAction(() => this.submittingFavoriteSetsId.delete(setId));
+    }
+
+    removeFavoriteSet = async (setId: string) => {
+        this.submittingFavoriteSetsId.add(setId);
+        try {
+            await flashCardApi.removeFavoriteSet(setId);
+            this.updateSetRegistery({...this.setsRegistery.get(setId), isFavorite: false} as FlashCardSet);
+        } catch (error) {
+            console.log(error);
+        }
+        runInAction(() => this.submittingFavoriteSetsId.delete(setId));
+    }
+
+    private updateSetsRegistery = (newSets: FlashCardSet[]) => {
+        newSets.map(set => this.setsRegistery.set(set.id,  set));
+    }
+
+    private updateSetRegistery = async(newSet: FlashCardSet) => {
+        this.setsRegistery.set(newSet.id, newSet);
     }
 }

@@ -4,4 +4,5 @@ export interface FlashCardSet {
     id: string;
     name: string;
     words: FlashCardWord[];
+    isFavorite: boolean;
 }

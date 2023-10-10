@@ -1,0 +1,6 @@
+.borderless-button,
+.borderless-button:hover,
+.borderless-button:focus-within {
+    border: none !important;
+    box-shadow: none !important;
+}

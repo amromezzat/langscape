@@ -1,4 +1,6 @@
 using System.Reflection;
+using Application.Features.FlashCards.Services;
+using Application.Features.FlashCards.Services.Impl;
 using Application.Interceptors.Impl;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -15,6 +17,7 @@ namespace Application.Extensions
             services.AddMediator();
             services.AddValidators();
             services.AddInterceptors();
+            services.AddServices();
         }
 
         private static void AddAutoMapper(this IServiceCollection services)
@@ -36,6 +39,11 @@ namespace Application.Extensions
         private static void AddInterceptors(this IServiceCollection services)
         {
             services.AddScoped<IAuditableEntitiesInterceptor, AuditableEntitiesInterceptor>();
+        }
+
+        private static void AddServices(this IServiceCollection services)
+        {
+            services.AddTransient<IFavoriteSetsService, FavoriteSetsService>();
         }
     }
 }
