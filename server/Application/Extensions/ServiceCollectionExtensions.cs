@@ -1,6 +1,8 @@
 using System.Reflection;
 using Application.Features.FlashCards.Services;
 using Application.Features.FlashCards.Services.Impl;
+using Application.Features.Users.Services;
+using Application.Features.Users.Services.Impl;
 using Application.Interceptors.Impl;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -11,39 +13,43 @@ namespace Application.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddApplicationLayer(this IServiceCollection services)
+        public static IServiceCollection AddApplicationLayer(this IServiceCollection services)
         {
-            services.AddAutoMapper();
-            services.AddMediator();
-            services.AddValidators();
-            services.AddInterceptors();
-            services.AddServices();
+            return services
+                .AddAutoMapper()
+                .AddMediator()
+                .AddValidators()
+                .AddInterceptors()
+                .AddServices();
         }
 
-        private static void AddAutoMapper(this IServiceCollection services)
+        private static IServiceCollection AddAutoMapper(this IServiceCollection services)
         {
-            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            return services.AddAutoMapper(Assembly.GetExecutingAssembly());
         }
 
-        private static void AddMediator(this IServiceCollection services)
+        private static IServiceCollection AddMediator(this IServiceCollection services)
         {
-            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+            return services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
         }
 
-        private static void AddValidators(this IServiceCollection services)
+        private static IServiceCollection AddValidators(this IServiceCollection services)
         {
-            services.AddFluentValidationAutoValidation();
-            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+            return services
+                .AddFluentValidationAutoValidation()
+                .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         }
 
-        private static void AddInterceptors(this IServiceCollection services)
+        private static IServiceCollection AddInterceptors(this IServiceCollection services)
         {
-            services.AddScoped<IAuditableEntitiesInterceptor, AuditableEntitiesInterceptor>();
+            return services.AddScoped<IAuditableEntitiesInterceptor, AuditableEntitiesInterceptor>();
         }
 
-        private static void AddServices(this IServiceCollection services)
+        private static IServiceCollection AddServices(this IServiceCollection services)
         {
-            services.AddTransient<IFavoriteSetsService, FavoriteSetsService>();
+            return services
+                .AddTransient<IFavoriteSetsService, FavoriteSetsService>()
+                .AddTransient<IUserService, UserService>();
         }
     }
 }

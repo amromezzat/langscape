@@ -5,4 +5,10 @@ export interface FlashCardSet {
     name: string;
     words: FlashCardWord[];
     isFavorite: boolean;
+    meta: FlashCardSetMeta;
+}
+
+export interface FlashCardSetMeta {
+    createdBy: string;
+    createdAt: Date;
 }

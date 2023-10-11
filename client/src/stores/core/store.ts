@@ -2,11 +2,11 @@ import { createContext } from "react";
 import { useContext } from "react";
 import FlashCardStore from "../features/flashCardStore";
 import ModalStore from "../common/modalStore";
-import AuthStore from "../features/authStore";
+import AccountStore from "../features/accountStore";
 
 export interface Store {
     modalStore: ModalStore;
-    authStore: AuthStore;
+    accountStore: AccountStore;
     flashCardStore: FlashCardStore;
 }
 

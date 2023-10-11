@@ -7,7 +7,7 @@ import '../../styles/Home.css'
 import ModalContainer from '../common/modals/ModalContainer';
 
 export default observer(function App() {
-  const { authStore, modalStore } = useStore();
+  const { accountStore: authStore, modalStore } = useStore();
 
   return (
     <Segment inverted textAlign='center' vertical className="masthead">

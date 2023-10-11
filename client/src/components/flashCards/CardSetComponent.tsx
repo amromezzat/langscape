@@ -1,10 +1,11 @@
-import { Card, Label, List } from "semantic-ui-react";
+import { Card, Grid, Label, List } from "semantic-ui-react";
 import { FlashCardSet } from "../../models/flashCards/flashCardSet";
-import { FavoriteButtonComponent } from "../common/FavoriteButtonComponent";
+import { FavoriteButtonComponent } from "../common/buttons/FavoriteButtonComponent";
 import { observer } from "mobx-react-lite";
 import { useStore } from "../../stores/core/store";
 import '../../styles/Common.css';
 import '../../styles/CardSetComponent.css';
+import { UserInfoComponent } from "../common/buttons/UserInfoComponent";
 
 interface Props {
     cardSet: FlashCardSet
@@ -19,19 +20,32 @@ export default observer(function CardSetComponent({cardSet}: Props) {
             className='card set'
             href='#card-example-link-card'
         >
-            <FavoriteButtonComponent 
-                isFavorite={cardSet.isFavorite}
-                isSubmitting={ submittingFavoriteSetId.has(cardSet.id) }
-                fieldProps={{basic: true, attached: 'left', className: 'borderless-button'}}
-                onClick={ () => cardSet.isFavorite ? removeFavoriteSet(cardSet.id) : addFavoriteSet(cardSet.id) }
-            />
+            <Grid>
+                <Grid.Row columns='equal'>
+                    <Grid.Column >
+                        <UserInfoComponent
+                            isDisabled={ false }
+                            buttonProps={ {basic: true, floated: 'left', className: 'borderless-button'} } 
+                            setMeta={ cardSet.meta }
+                        />
+                    </Grid.Column>
+                    <Grid.Column >
+                        <FavoriteButtonComponent 
+                            isFavorite={ cardSet.isFavorite }
+                            isSubmitting={ submittingFavoriteSetId.has(cardSet.id) }
+                            fieldProps={ {basic: true, floated: 'right', className: 'borderless-button'} }
+                            onClick={ () => cardSet.isFavorite ? removeFavoriteSet(cardSet.id) : addFavoriteSet(cardSet.id) }
+                        />
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
             <Card.Content>
                 <Card.Header>
-                    {cardSet.name}
+                    { cardSet.name }
                 </Card.Header>
                 <Card.Meta>
                     <Label color='blue' circular size="small">
-                        {cardSet.words.length}&nbsp;&nbsp;words
+                        { cardSet.words.length }&nbsp;&nbsp;words
                     </Label>
                 </Card.Meta>
             </Card.Content>
@@ -39,7 +53,7 @@ export default observer(function CardSetComponent({cardSet}: Props) {
                 <Card.Description>
                     <List>
                         {cardSet.words.map(word => (
-                            <List.Item key={word.id}>{word.word} | {word.translation}</List.Item>
+                            <List.Item key={ word.id }>{ word.word } | {word.translation }</List.Item>
                         ))}
                     </List>
                 </Card.Description>

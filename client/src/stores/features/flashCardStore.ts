@@ -1,4 +1,4 @@
-import { makeAutoObservable, runInAction, set } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 import { FlashCardSet } from "../../models/flashCards/flashCardSet";
 import { flashCardApi } from "../../services/api/features/flashcards/flashCardApi";
 
@@ -48,7 +48,10 @@ export default class FlashCardStore {
     }
 
     private updateSetsRegistery = (newSets: FlashCardSet[]) => {
-        newSets.map(set => this.setsRegistery.set(set.id,  set));
+        newSets.forEach(set => {
+            set.meta.createdAt = new Date(set.meta.createdAt + 'Z');
+            this.setsRegistery.set(set.id,  set)
+        });
     }
 
     private updateSetRegistery = async(newSet: FlashCardSet) => {

@@ -9,11 +9,11 @@ import { RouterProvider } from 'react-router-dom';
 import { router } from './routes/Routes';
 import { Store } from './stores/core/store';
 import ModalStore from './stores/common/modalStore';
-import AuthStore from './stores/features/authStore';
+import UserStore from './stores/features/accountStore';
 
 const store: Store = {
   modalStore: new ModalStore(),
-  authStore: new AuthStore(),
+  accountStore: new UserStore(),
   flashCardStore: new FlashCardStore()
 }
 const root = ReactDOM.createRoot(

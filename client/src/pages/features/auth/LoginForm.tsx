@@ -7,7 +7,7 @@ import { AuthUserForm } from "../../../models/user/authUserForm"
 import { router } from "../../../routes/Routes"
 
 export default observer(function LoginForm() {
-    const { authStore, modalStore } = useStore();
+    const { accountStore: authStore, modalStore } = useStore();
     const initialValues: AuthUserForm = {
         email: '',
         password: '',

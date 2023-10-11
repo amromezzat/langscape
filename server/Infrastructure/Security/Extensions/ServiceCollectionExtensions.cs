@@ -3,38 +3,41 @@ using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.DependencyInjection;
-using Infrastructure.Security.Services;
 using Persistence.Contexts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Infrastructure.Security.Authorization;
+using Infrastructure.Security.Services.Impl;
 
 namespace Infrastructure.Security.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddInfrastructureLayer(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddInfrastructureLayer(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddTokenService();
-            services.AddAccessors();
-            services.AddAuthentication(configuration);
-            services.AddAuthorizations();
+            return services
+                .AddTokenService()
+                .AddAccessors()
+                .AddAuthentication(configuration)
+                .AddAuthorizations();
         }
 
-        private static void AddTokenService(this IServiceCollection services)
+        private static IServiceCollection AddTokenService(this IServiceCollection services)
         {
-            services.AddScoped<ITokenService, TokenService>();
+            return services.AddScoped<ITokenService, TokenService>();
         }
 
-        private static void AddAccessors(this IServiceCollection services)
+        private static IServiceCollection AddAccessors(this IServiceCollection services)
         {
-            services.AddHttpContextAccessor();
-            services.AddScoped<IUserAccessor, UserAccessor>();
+            return services
+                .AddHttpContextAccessor()
+                .AddScoped<IUserAccessor, UserAccessor>()
+                .AddScoped<IUserManager, UserManager>();
         }
 
-        private static void AddAuthentication(this IServiceCollection services, IConfiguration configuration)
+        private static IServiceCollection AddAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddIdentityCore<AppUser>(opt => 
             {
@@ -55,9 +58,11 @@ namespace Infrastructure.Security.Extensions
                         ValidateAudience = false
                     };
                 });
+
+            return services;
         }
 
-        private static void AddAuthorizations(this IServiceCollection services)
+        private static IServiceCollection AddAuthorizations(this IServiceCollection services)
         {
             services.AddControllers(opt => 
             {
@@ -72,7 +77,10 @@ namespace Infrastructure.Security.Extensions
                     policy.Requirements.Add(new IsOwnerRequirement<FlashCardsSet>());
                 });
             });
+
             services.AddTransient<IAuthorizationHandler, IsOwnerRequirementHandler<FlashCardsSet>>();
+
+            return services;
         }
     }
 }
