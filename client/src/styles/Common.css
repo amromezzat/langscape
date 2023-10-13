@@ -4,3 +4,11 @@
     border: none !important;
     box-shadow: none !important;
 }
+
+.no-padding-left-segment {
+    padding-left: 0 !important;
+}
+
+.white-text {
+    color: white !important;
+  }

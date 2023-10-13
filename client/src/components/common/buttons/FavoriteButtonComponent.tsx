@@ -1,4 +1,4 @@
-import { Button, StrictButtonProps } from "semantic-ui-react";
+import { Button, Icon, StrictButtonProps } from "semantic-ui-react";
 
 interface Props {
     isFavorite: boolean,
@@ -11,9 +11,14 @@ export const FavoriteButtonComponent = ({ isFavorite, isSubmitting, fieldProps, 
     return (
         <Button 
             { ...fieldProps }
-            icon={ isFavorite ? 'star yellow' : 'star outline' }
             disabled={ isSubmitting }
             onClick={ onClick }
-        />
+        >
+            <Icon
+                fitted
+                name={ isFavorite ? 'star' : 'star outline' } 
+                color={ isFavorite ? 'yellow' : 'grey' }    
+            />
+        </Button>
     )
 };

@@ -1,11 +1,11 @@
 import { Card, Grid, Label, List } from "semantic-ui-react";
-import { FlashCardSet } from "../../models/flashCards/flashCardSet";
-import { FavoriteButtonComponent } from "../common/buttons/FavoriteButtonComponent";
+import { FlashCardSet } from "../../../models/flashCards/flashCardSet";
+import { FavoriteButtonComponent } from "../../common/buttons/FavoriteButtonComponent";
 import { observer } from "mobx-react-lite";
-import { useStore } from "../../stores/core/store";
-import '../../styles/Common.css';
-import '../../styles/CardSetComponent.css';
-import { UserInfoComponent } from "../common/buttons/UserInfoComponent";
+import { useStore } from "../../../stores/core/store";
+import { UserInfoComponent } from "../../common/buttons/SetCreatorInfoComponent";
+import '../../../styles/Common.css';
+import '../../../styles/CardSetComponent.css';
 
 interface Props {
     cardSet: FlashCardSet
@@ -24,7 +24,6 @@ export default observer(function CardSetComponent({cardSet}: Props) {
                 <Grid.Row columns='equal'>
                     <Grid.Column >
                         <UserInfoComponent
-                            isDisabled={ false }
                             buttonProps={ {basic: true, floated: 'left', className: 'borderless-button'} } 
                             setMeta={ cardSet.meta }
                         />
@@ -39,12 +38,12 @@ export default observer(function CardSetComponent({cardSet}: Props) {
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
-            <Card.Content>
+            <Card.Content textAlign='center'>
                 <Card.Header>
                     { cardSet.name }
                 </Card.Header>
                 <Card.Meta>
-                    <Label color='blue' circular size="small">
+                    <Label color='blue' circular size='small'>
                         { cardSet.words.length }&nbsp;&nbsp;words
                     </Label>
                 </Card.Meta>

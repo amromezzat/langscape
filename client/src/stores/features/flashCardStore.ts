@@ -1,4 +1,4 @@
-import { makeAutoObservable, runInAction } from "mobx";
+import { makeAutoObservable, reaction, runInAction } from "mobx";
 import { FlashCardSet } from "../../models/flashCards/flashCardSet";
 import { flashCardApi } from "../../services/api/features/flashcards/flashCardApi";
 
@@ -6,9 +6,18 @@ export default class FlashCardStore {
     setsRegistery = new Map<string, FlashCardSet>();
     loading = false;
     submittingFavoriteSetsId = new Set<string>();
+    filters = new Map<string, any>();
 
     constructor() {
         makeAutoObservable(this);
+
+        reaction (
+            () => this.filters.keys(),
+            () => {
+                this.setsRegistery.clear();
+                this.loadSets();
+            }
+        )
     }
 
     setLoading = (state: boolean) => this.loading = state;
@@ -16,7 +25,8 @@ export default class FlashCardStore {
     loadSets = async () => {
         this.setLoading(true);
         try {
-            this.updateSetsRegistery(await flashCardApi.getCardSets());
+            const filters = this.filters.size > 0 ? this.filters : undefined;
+            this.updateSetsRegistery(await flashCardApi.getCardSets(filters));
             this.setLoading(false);
         } catch (error) {
             console.log(error);
@@ -45,6 +55,15 @@ export default class FlashCardStore {
             console.log(error);
         }
         runInAction(() => this.submittingFavoriteSetsId.delete(setId));
+    }
+
+    setFilter = (key: string) => {
+        this.clearFilter();
+        this.filters.set(key, true);
+    }
+
+    clearFilter = () => {
+        this.filters.clear();
     }
 
     private updateSetsRegistery = (newSets: FlashCardSet[]) => {

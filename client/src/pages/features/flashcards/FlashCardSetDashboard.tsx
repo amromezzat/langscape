@@ -1,8 +1,12 @@
 import { observer } from "mobx-react-lite";
-import CardGroupComponent from "../../../components/flashCards/CardGroupComponent";
+import CardGroupComponent from "../../../components/features/flashCards/CardGroupComponent";
+import CardSetFilter from "../../../components/features/flashCards/CardSetFilter";
 
 export default observer (function FlashCardSetDashboard() {
     return (
-        <CardGroupComponent />
+        <>
+            <CardSetFilter />
+            <CardGroupComponent />
+        </>
     )
-})
+});

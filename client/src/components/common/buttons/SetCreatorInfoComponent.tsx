@@ -1,10 +1,10 @@
-import { Button, Placeholder, Popup, StrictButtonProps } from "semantic-ui-react";
+import { Button, Icon, Placeholder, Popup, StrictButtonProps } from "semantic-ui-react";
 import { FlashCardSetMeta } from "../../../models/flashCards/flashCardSet";
 import { useState } from "react";
 import { useStore } from "../../../stores/core/store";
 
 interface Props {
-    isDisabled: boolean,
+    isDisabled?: boolean,
     buttonProps?: StrictButtonProps,
     setMeta: FlashCardSetMeta,
     onClick?: () => void,
@@ -28,30 +28,41 @@ export const UserInfoComponent = ({ isDisabled, buttonProps, setMeta, onClick, o
             trigger={ 
                 <Button 
                     { ...buttonProps }
-                    icon='user blue'
-                    disabled={ isDisabled }
+                    disabled={ isDisabled ?? false }
                     onClick={ onClick }
+                >
+                <Icon
+                    fitted
+                    name='user' 
+                    color='blue' 
                 />
+                </Button>
             }
             onOpen={ handleOnOpen }
-            popperDependencies={ [ !!displayName ] }
+            popperDependencies={[ !!displayName ]}
             content={        
             <>
             { setMeta.createdBy && 
-                <p><strong>Created By:</strong> { displayName ? (
-                    <>
-                        <p>{ displayName }</p>
-                    </>
-                ) : (
-                    <>
-                        <Placeholder style={{ minWidth: '200px' }}>
-                            <Placeholder.Line length='short' />
-                        </Placeholder>
-                    </>
-                )}
+                <>
+                { 
+                    displayName ? (
+                        <p>
+                            <strong>Created By: </strong>{ displayName }
+                        </p>
+                    ) : (
+                        <>
+                            <Placeholder style={{ minWidth: '200px' }}>
+                                <Placeholder.Line length='short' />
+                            </Placeholder>
+                            <br/>
+                        </>
+                    )
+                }
+                </>
+                }
+                <p>
+                    <strong>Created At:</strong> { setMeta.createdAt.toLocaleString() }
                 </p>
-            }
-                <p><strong>Created At:</strong> { setMeta.createdAt.toLocaleString() }</p>
             </>
             }
         >
