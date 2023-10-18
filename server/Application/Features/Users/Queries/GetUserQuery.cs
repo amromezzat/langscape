@@ -8,13 +8,13 @@ using Langscape.Shared;
 using Langscape.Shared.Implementation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Persistence.Repositories;
 
 namespace Application.Features.Users.Queries
 {
     public class GetUserQuery : IRequest<ActionResult<IResult<UserDto>>>
     {
         public string UserId { get; set; }
+        public string Username { get; set; }
     }
 
     public class GetUserQueryHandler : IRequestHandler<GetUserQuery, ActionResult<IResult<UserDto>>>
@@ -30,7 +30,16 @@ namespace Application.Features.Users.Queries
 
         public async Task<ActionResult<IResult<UserDto>>> Handle(GetUserQuery request, CancellationToken cancellationToken)
         {
-            var user = await _userManager.GetUser(request.UserId);
+            AppUser user = null;
+            
+            if (request.UserId != null) 
+            {
+                user = await _userManager.GetUserById(request.UserId);
+            }
+            else if(request.Username != null) 
+            {
+                user = await _userManager.GetUserByUsername(request.Username);
+            }
 
             if(user == null) 
             {

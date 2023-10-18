@@ -34,9 +34,14 @@ namespace Infrastructure.Security.Services.Impl
             return null;
         }
 
-        public async Task<AppUser> GetUser(string id) 
+        public async Task<AppUser> GetUserById(string id) 
         {
             return await _userManager.Users.FirstOrDefaultAsync(u => u.Id == id);
+        }
+
+        public async Task<AppUser> GetUserByUsername(string username) 
+        {
+            return await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == username);
         }
     }
 }

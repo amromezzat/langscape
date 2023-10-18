@@ -29,9 +29,15 @@ namespace API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<IResult<UserDto>>> GetUser(CancellationToken cancellationToken, string id)
+        public async Task<ActionResult<IResult<UserDto>>> GetUserById(CancellationToken cancellationToken, string id)
         {
             return await _mediator.Send(new GetUserQuery { UserId = id }, cancellationToken);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IResult<UserDto>>> GetUserByUsername(CancellationToken cancellationToken, [FromQuery] string username)
+        {
+            return await _mediator.Send(new GetUserQuery { Username = username }, cancellationToken);
         }
     }
 }

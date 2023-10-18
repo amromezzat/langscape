@@ -57,9 +57,9 @@ export default class FlashCardStore {
         runInAction(() => this.submittingFavoriteSetsId.delete(setId));
     }
 
-    setFilter = (key: string) => {
+    setFilter = (key: string, value?: string) => {
         this.clearFilter();
-        this.filters.set(key, true);
+        this.filters.set(key, value ?? true);
     }
 
     clearFilter = () => {

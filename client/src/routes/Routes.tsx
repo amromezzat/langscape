@@ -9,7 +9,8 @@ export const routes: RouteObject[] = [
         path: '/',
         element: <Home />,
         children: [
-            { path: 'flashcards', element: <FlashCardSetDashboard /> },
+            { path: 'sets', element: <FlashCardSetDashboard key='current'/> },
+            { path: ':username/sets', element: <FlashCardSetDashboard key='other' />},
             { path: 'not-found', element: <NotFound /> },
             { path: 'server-error', element: <ServerError /> },
             { path: '*', element: <Navigate replace to='not-found' /> }

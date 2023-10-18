@@ -18,8 +18,9 @@ namespace Application.Features.Users.Services.Impl
             return new AuthUserDto
             {
                 DisplayName = user.DisplayName,
-                Token = _tokenService.CreateToken(user),
-                Username = user.UserName
+                Username = user.UserName,
+                Id = user.Id,
+                Token = _tokenService.CreateToken(user)
             };
         }
 
@@ -28,7 +29,8 @@ namespace Application.Features.Users.Services.Impl
             return new UserDto
             {
                 DisplayName = user.DisplayName,
-                Username = user.UserName
+                Username = user.UserName,
+                Id = user.Id
             };
         }
     }

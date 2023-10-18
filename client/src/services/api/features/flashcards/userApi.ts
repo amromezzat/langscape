@@ -4,5 +4,6 @@ import { apiRequest } from "../../core/apiRequest";
 
 export const authApi = {
     login: (user: AuthUserForm) => apiRequest.post<AuthUser>('/accounts/login', user),
-    getUser: (userId: string) => apiRequest.get<User>(`/accounts/${userId}`)
+    getUserById: (userId: string) => apiRequest.get<User>(`/accounts/${userId}`),
+    getUserByUsername: (username: string) => apiRequest.get<User>(`/accounts`, new Map<string, string>([['username', username]]))
 }

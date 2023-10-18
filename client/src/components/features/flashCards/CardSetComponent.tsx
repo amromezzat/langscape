@@ -6,14 +6,30 @@ import { useStore } from "../../../stores/core/store";
 import { UserInfoComponent } from "../../common/buttons/SetCreatorInfoComponent";
 import '../../../styles/Common.css';
 import '../../../styles/CardSetComponent.css';
+import { router } from "../../../routes/Routes";
+import { SyntheticEvent } from "react";
+import { User } from "../../../models/user/user";
+import { useParams } from "react-router-dom";
 
 interface Props {
     cardSet: FlashCardSet
 }
 
 export default observer(function CardSetComponent({cardSet}: Props) {
+    const { username } = useParams();
     const { flashCardStore } = useStore();
     const { submittingFavoriteSetsId: submittingFavoriteSetId, addFavoriteSet, removeFavoriteSet } = flashCardStore;
+
+    function handleUserInfoClick(event: SyntheticEvent, user: User) {
+        event.preventDefault();
+        flashCardStore.setFilter('userId', user.id);
+        router.navigate(`/${user.username}/sets`);
+    }
+
+    function handleFavoriteClick(event: SyntheticEvent) {
+        event.preventDefault();
+        cardSet.isFavorite ? removeFavoriteSet(cardSet.id) : addFavoriteSet(cardSet.id)
+    }
     
     return (
         <Card 
@@ -23,17 +39,19 @@ export default observer(function CardSetComponent({cardSet}: Props) {
             <Grid>
                 <Grid.Row columns='equal'>
                     <Grid.Column >
-                        <UserInfoComponent
+                        { !username ? <UserInfoComponent
                             buttonProps={ {basic: true, floated: 'left', className: 'borderless-button'} } 
                             setMeta={ cardSet.meta }
-                        />
+                            onClick={ handleUserInfoClick }
+                        /> : null 
+                        }
                     </Grid.Column>
                     <Grid.Column >
                         <FavoriteButtonComponent 
                             isFavorite={ cardSet.isFavorite }
                             isSubmitting={ submittingFavoriteSetId.has(cardSet.id) }
                             fieldProps={ {basic: true, floated: 'right', className: 'borderless-button'} }
-                            onClick={ () => cardSet.isFavorite ? removeFavoriteSet(cardSet.id) : addFavoriteSet(cardSet.id) }
+                            onClick={ handleFavoriteClick }
                         />
                     </Grid.Column>
                 </Grid.Row>

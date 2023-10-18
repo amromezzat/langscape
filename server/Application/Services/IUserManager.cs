@@ -9,6 +9,9 @@ namespace Application.Services
         Task<AppUser> SignIn(string email, string password);
 
         /// <returns>Returns user that matches the provided id</returns>
-        Task<AppUser> GetUser(string id);
+        Task<AppUser> GetUserById(string id);
+
+        /// <returns>Returns user that matches the provided username</returns>
+        Task<AppUser> GetUserByUsername(string username);
     }
 }

@@ -1,10 +1,11 @@
+import { SyntheticEvent } from "react";
 import { Button, Icon, StrictButtonProps } from "semantic-ui-react";
 
 interface Props {
     isFavorite: boolean,
     isSubmitting: boolean,
     fieldProps?: StrictButtonProps,
-    onClick: () => void
+    onClick: (event: SyntheticEvent) => void
 }
 
 export const FavoriteButtonComponent = ({ isFavorite, isSubmitting, fieldProps, onClick }: Props) => {
@@ -12,7 +13,7 @@ export const FavoriteButtonComponent = ({ isFavorite, isSubmitting, fieldProps, 
         <Button 
             { ...fieldProps }
             disabled={ isSubmitting }
-            onClick={ onClick }
+            onClick={ event => onClick(event) }
         >
             <Icon
                 fitted
