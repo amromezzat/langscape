@@ -25,8 +25,7 @@ export const UserInfoComponent = ({ isDisabled, buttonProps, setMeta, onClick, o
     }
 
     function handleOnClick(event: SyntheticEvent) {
-        if (!isDisabled 
-            && user !== undefined) {
+        if (!isDisabled) {
             onClick?.(event, user!);
         }
     }

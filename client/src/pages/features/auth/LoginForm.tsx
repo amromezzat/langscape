@@ -6,7 +6,11 @@ import ValidatableTextInput from "../../../components/common/form/ValidatableTex
 import { AuthUserForm } from "../../../models/user/authUserForm"
 import { router } from "../../../routes/Routes"
 
-export default observer(function LoginForm() {
+interface Props {
+    urlRoute?: string;
+}
+
+export default observer(function LoginForm({urlRoute}: Props) {
     const { accountStore: authStore, modalStore } = useStore();
     const initialValues: AuthUserForm = {
         email: '',
@@ -17,7 +21,7 @@ export default observer(function LoginForm() {
     async function onFormSubmit(formData: AuthUserForm, {setErrors}: FormikHelpers<AuthUserForm>) {
         try {
             await authStore.login(formData);
-            router.navigate('/');
+            router.navigate(urlRoute ?? '/');
             modalStore.closeModal();
         } catch (e){
             setErrors({error: 'Invalid email or password!!'});

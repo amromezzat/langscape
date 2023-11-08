@@ -1,13 +1,8 @@
 import axios from 'axios';
 import HandleError from './apiErrorHandler';
+import { sleep } from './utility';
 
 const axiosInstance = axios.create();
-
-const sleep = async (delay: number) => {
-    return new Promise((resolve) => {
-        setTimeout(resolve, delay);
-    });
-}
 
 let token: string | undefined = undefined;
 
@@ -19,7 +14,7 @@ axiosInstance.interceptors.request.use(config => {
     return config;
 });
 axiosInstance.interceptors.response.use(async response => {
-    await sleep(1000);
+    await sleep(1);
     return response;
 }, HandleError);
 

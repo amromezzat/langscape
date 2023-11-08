@@ -1,15 +1,15 @@
 import { Card, Grid, Label, List } from "semantic-ui-react";
-import { FlashCardSet } from "../../../models/flashCards/flashCardSet";
-import { FavoriteButtonComponent } from "../../common/buttons/FavoriteButtonComponent";
+import { FlashCardSet } from "../../../../models/flashCards/flashCardSet";
+import { FavoriteButtonComponent } from "../../../common/buttons/FavoriteButtonComponent";
 import { observer } from "mobx-react-lite";
-import { useStore } from "../../../stores/core/store";
-import { UserInfoComponent } from "../../common/buttons/SetCreatorInfoComponent";
-import '../../../styles/Common.css';
-import '../../../styles/CardSetComponent.css';
-import { router } from "../../../routes/Routes";
+import { useStore } from "../../../../stores/core/store";
+import { UserInfoComponent } from "../../../common/buttons/SetCreatorInfoComponent";
+import '../../../../styles/Common.css';
+import '../../../../styles/CardSetComponent.css';
+import { router } from "../../../../routes/Routes";
 import { SyntheticEvent } from "react";
-import { User } from "../../../models/user/user";
-import { useParams } from "react-router-dom";
+import { User } from "../../../../models/user/user";
+import { Link, useParams } from "react-router-dom";
 
 interface Props {
     cardSet: FlashCardSet
@@ -22,19 +22,21 @@ export default observer(function CardSetComponent({cardSet}: Props) {
 
     function handleUserInfoClick(event: SyntheticEvent, user: User) {
         event.preventDefault();
+        if(user === undefined) return;
+        
         flashCardStore.setFilter('userId', user.id);
         router.navigate(`/${user.username}/sets`);
     }
 
     function handleFavoriteClick(event: SyntheticEvent) {
         event.preventDefault();
-        cardSet.isFavorite ? removeFavoriteSet(cardSet.id) : addFavoriteSet(cardSet.id)
+        cardSet.isFavorite ? removeFavoriteSet(cardSet.id) : addFavoriteSet(cardSet.id);
     }
     
     return (
         <Card 
             className='card set'
-            href='#card-example-link-card'
+            as={Link} to={`/sets/${cardSet.id}`}
         >
             <Grid>
                 <Grid.Row columns='equal'>
@@ -62,14 +64,14 @@ export default observer(function CardSetComponent({cardSet}: Props) {
                 </Card.Header>
                 <Card.Meta>
                     <Label color='blue' circular size='small'>
-                        { cardSet.words.length }&nbsp;&nbsp;words
+                        { cardSet.previewWords?.length }&nbsp;&nbsp;words
                     </Label>
                 </Card.Meta>
             </Card.Content>
             <Card.Content>
                 <Card.Description>
                     <List>
-                        {cardSet.words.map(word => (
+                        {cardSet.previewWords?.map(word => (
                             <List.Item key={ word.id }>{ word.word } | {word.translation }</List.Item>
                         ))}
                     </List>

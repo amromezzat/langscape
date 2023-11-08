@@ -1,10 +1,10 @@
 import { Button, Container, Segment } from 'semantic-ui-react';
-import FlashCardSetDashboard from '../features/flashcards/FlashCardSetDashboard';
 import { observer } from 'mobx-react-lite';
 import { useStore } from '../../stores/core/store';
 import LoginForm from '../features/auth/LoginForm';
 import ModalContainer from '../common/modals/ModalContainer';
 import '../../styles/Home.css'
+import { Outlet } from 'react-router-dom';
 
 export default observer(function App() {
   const { accountStore: authStore, modalStore } = useStore();
@@ -15,8 +15,8 @@ export default observer(function App() {
       <Container style={{ marginTop: '7em' }}>
         {
           authStore.isLoggedIn ? 
-            <FlashCardSetDashboard /> :
-            <Button onClick={ () => modalStore.openModal(<LoginForm />) } size='huge' inverted>
+            <Outlet /> :
+            <Button onClick={ () => modalStore.openModal(<LoginForm urlRoute='/sets' />) } size='huge' inverted>
               Login
             </Button>
         }

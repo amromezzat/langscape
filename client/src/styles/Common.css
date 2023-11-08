@@ -11,4 +11,8 @@
 
 .white-text {
     color: white !important;
-  }
+}
+
+.data {
+    white-space: pre;
+}

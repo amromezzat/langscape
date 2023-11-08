@@ -1,0 +1,38 @@
+.flip-card {
+    max-width: 75% !important;
+    min-height: 400px !important;
+    transition: all 0.5s;
+    transform-style: preserve-3d;
+}
+
+.flip-card-front {
+    backface-visibility: hidden;
+}
+
+.flip-card-back {
+    backface-visibility: hidden;
+    transform: rotateY(180deg);
+}
+
+.card-flip-animation {
+    transform: rotateY(180deg);
+}
+
+.card-move-left-animation {
+    animation: moveLeft 0.1s 1 !important;
+}
+@keyframes moveLeft {
+    to {
+        transform: perspective(50em) translateX(-10%) rotateY(5deg);
+    }
+}
+
+.card-move-right-animation {
+    animation: moveRight 0.1s 1 !important;
+}
+@keyframes moveRight {
+    to {
+        transform: perspective(50em) translateX(10%) rotateY(-5deg);
+    }
+}
+

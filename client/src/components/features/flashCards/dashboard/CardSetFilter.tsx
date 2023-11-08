@@ -1,8 +1,8 @@
 import { observer } from "mobx-react-lite"
 import { Dropdown, DropdownProps, Segment } from "semantic-ui-react";
-import { setFilterOptions, setServerFilterOptions } from "../../../constants/cardSetFilterOptions";
-import { useStore } from "../../../stores/core/store";
-import "../../../styles/Common.css"
+import { setFilterOptions, setServerFilterOptions } from "../../../../constants/cardSetFilterOptions";
+import { useStore } from "../../../../stores/core/store";
+import "../../../../styles/Common.css"
 
 export default observer (function CardSetFilter() {
     const options = Array.from(setFilterOptions.entries()).map(([key, text]) => ({

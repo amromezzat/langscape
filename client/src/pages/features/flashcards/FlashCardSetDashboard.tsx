@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
-import CardGroupComponent from "../../../components/features/flashCards/CardGroupComponent";
-import CardSetFilter from "../../../components/features/flashCards/CardSetFilter";
+import CardGroupComponent from "../../../components/features/flashCards/dashboard/CardGroupComponent";
+import CardSetFilter from "../../../components/features/flashCards/dashboard/CardSetFilter";
 import { useParams } from "react-router-dom";
 import UserHeaderComponent from "../../../components/common/headers/UserHeaderComponent";
 import { useEffect } from "react";
@@ -14,7 +14,7 @@ export default observer (function FlashCardSetDashboard() {
         if(!username) {
             clearFilter();
         }    
-    }, [username])
+    }, [username, clearFilter])
 
     return (
         <>

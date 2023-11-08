@@ -27,10 +27,22 @@ export default class FlashCardStore {
         try {
             const filters = this.filters.size > 0 ? this.filters : undefined;
             this.updateSetsRegistery(await flashCardApi.getCardSets(filters));
-            this.setLoading(false);
         } catch (error) {
             console.log(error);
-            this.setLoading(false);
+        } 
+        runInAction(() => this.setLoading(false));
+    }
+
+    loadSet = async (setId: string) => {
+        this.setLoading(true);
+        try {
+            let set = await flashCardApi.getCardSet(setId);
+            this.updateSetRegistery({...this.setsRegistery.get(setId), ...set} as FlashCardSet);
+            runInAction(() => this.setLoading(false));
+            return set;
+        } catch (error) {
+            console.log(error);
+            runInAction(() => this.setLoading(false));
         }
     }
 
@@ -69,11 +81,13 @@ export default class FlashCardStore {
     private updateSetsRegistery = (newSets: FlashCardSet[]) => {
         newSets.forEach(set => {
             set.meta.createdAt = new Date(set.meta.createdAt + 'Z');
-            this.setsRegistery.set(set.id,  set)
+            set.previewWords = set.words;
+            set.words = [];
+            this.updateSetRegistery(set)
         });
     }
 
-    private updateSetRegistery = async(newSet: FlashCardSet) => {
+    private updateSetRegistery = (newSet: FlashCardSet) => {
         this.setsRegistery.set(newSet.id, newSet);
     }
 }
