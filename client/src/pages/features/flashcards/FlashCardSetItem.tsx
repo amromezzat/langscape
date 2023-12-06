@@ -8,10 +8,11 @@ import { Loader } from "semantic-ui-react";
 import CardSetExpandedComponent, { MovementType } from "../../../components/features/flashCards/setView/SetFlipCardComponent";
 import FlashCardSetPagination from "../../../components/features/flashCards/setView/FlashCardSetPagination";
 import { sleep } from "../../../services/api/core/utility";
+import SetWordsList from "../../../components/features/flashCards/setView/SetWordsList";
 
 export default observer (function FlashCardSetItem() {
     const swipeAnimationTime = 0.1;
-    const {flashCardStore} = useStore();
+    const {flashCardStore, accountStore} = useStore();
     const {loadSet, loading, setLoading} = flashCardStore;
     const {id} = useParams();
     const [set, setSet] = useState<FlashCardSet | undefined>(undefined);
@@ -75,6 +76,11 @@ export default observer (function FlashCardSetItem() {
                         wordsCount={set.words.length}
                         handleLeftClicked={handleLeftClicked}
                         handleRightClicked={handleRightClicked} 
+                    />
+                    <SetWordsList 
+                        setId={set.id}
+                        isSetOwner={set.meta.createdBy === accountStore.authUser?.id}
+                        words={set.words}
                     />
                 </>
             )}

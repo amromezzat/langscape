@@ -1,6 +1,7 @@
 import { makeAutoObservable, reaction, runInAction } from "mobx";
 import { FlashCardSet } from "../../models/flashCards/flashCardSet";
 import { flashCardApi } from "../../services/api/features/flashcards/flashCardApi";
+import { FlashCardWord } from "../../models/flashCards/flashCardWord";
 
 export default class FlashCardStore {
     setsRegistery = new Map<string, FlashCardSet>();
@@ -76,6 +77,10 @@ export default class FlashCardStore {
 
     clearFilter = () => {
         this.filters.clear();
+    }
+
+    updateWord = (setId: string, word: FlashCardWord) => {
+        flashCardApi.updateWord(setId, word);
     }
 
     private updateSetsRegistery = (newSets: FlashCardSet[]) => {

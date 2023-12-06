@@ -39,7 +39,7 @@ namespace Application.Features.FlashCards.Queries
                 .Entities
                 .AsNoTracking()
                 .ProjectTo<GetFlashCardsSetDto>(_mapper.ConfigurationProvider, new { favorites = currentUserFavorites })
-                .FirstOrDefaultAsync(e => e.Id == request.SetId);
+                .FirstOrDefaultAsync(e => e.Id == request.SetId, cancellationToken);
 
             return await Result<GetFlashCardsSetDto>.Success(flashCardSet).ToTask();
         }

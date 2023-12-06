@@ -1,0 +1,7 @@
+.set-words-list-item {
+    max-width: 75% !important;
+}
+
+.set-word-list-item-group > div {
+    width: 100px !important;
+}
