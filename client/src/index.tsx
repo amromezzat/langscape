@@ -10,9 +10,11 @@ import { router } from './routes/Routes';
 import { Store } from './stores/core/store';
 import ModalStore from './stores/common/modalStore';
 import UserStore from './stores/features/accountStore';
+import PromptStore from './stores/common/promptStore';
 
 const store: Store = {
   modalStore: new ModalStore(),
+  promptStore: new PromptStore(),
   accountStore: new UserStore(),
   flashCardStore: new FlashCardStore()
 }

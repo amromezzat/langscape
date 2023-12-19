@@ -24,7 +24,6 @@ export default function SetFormEditList({ words, isSubmitting, setFieldValue }: 
     function removeWord(
         word: FlashCardFormWord, 
         index: number, 
-        arrayReplace: (index: number, word: FlashCardFormWord) => void, 
         arrayRemove: (index: number) => void) {
         if(!!word.id) {
             setFieldValue(getDeletedInputName(index), !word.isDeleted);
@@ -36,7 +35,7 @@ export default function SetFormEditList({ words, isSubmitting, setFieldValue }: 
 
     return <FieldArray 
         name={'words'}
-        render={({push, replace, remove}) => {
+        render={({push, remove}) => {
             return (
                 <>
                     { words.map((word, index) => {
@@ -45,7 +44,7 @@ export default function SetFormEditList({ words, isSubmitting, setFieldValue }: 
                             translationInputName={getTranslationInputName(index)} 
                             index={index + 1}
                             isDeleted={word.isDeleted}
-                            handleRemove={() => removeWord(word, index, replace, remove)}
+                            handleRemove={() => removeWord(word, index, remove)}
                             key={index}
                         />
                     }) }

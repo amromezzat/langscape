@@ -108,6 +108,15 @@ export default class FlashCardStore {
         }
     }
 
+    deleteSet = async (setId: string) => {
+        try {
+            await flashCardApi.deleteSet(setId);
+            runInAction(() => this.setsRegistery.delete(setId));
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     private updateSetsRegistery = (newSets: FlashCardSet[]) => {
         newSets.forEach(set => {
             set.meta.createdAt = new Date(set.meta.createdAt + 'Z');

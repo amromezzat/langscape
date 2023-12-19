@@ -3,9 +3,11 @@ import { useContext } from "react";
 import FlashCardStore from "../features/flashCardStore";
 import ModalStore from "../common/modalStore";
 import AccountStore from "../features/accountStore";
+import PromptStore from "../common/promptStore";
 
 export interface Store {
     modalStore: ModalStore;
+    promptStore: PromptStore;
     accountStore: AccountStore;
     flashCardStore: FlashCardStore;
 }
