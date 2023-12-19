@@ -1,19 +1,20 @@
 import { observer } from "mobx-react-lite";
 import CardSetHeaderComponent from "../../../components/features/flashCards/setView/CardSetHeaderComponent";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useStore } from "../../../stores/core/store";
 import { FlashCardSet } from "../../../models/flashCards/flashCardSet";
-import { Loader } from "semantic-ui-react";
+import { Button, Grid, Loader } from "semantic-ui-react";
 import CardSetExpandedComponent, { MovementType } from "../../../components/features/flashCards/setView/SetFlipCardComponent";
 import FlashCardSetPagination from "../../../components/features/flashCards/setView/FlashCardSetPagination";
 import { sleep } from "../../../services/api/core/utility";
 import SetWordsList from "../../../components/features/flashCards/setView/SetWordsList";
+import "../../../styles/SetWordsList.css"
 
-export default observer (function FlashCardSetItem() {
+export default observer (function FlashCardSetList() {
     const swipeAnimationTime = 0.1;
-    const {flashCardStore, accountStore} = useStore();
-    const {loadSet, loading, setLoading} = flashCardStore;
+    const {flashCardStore, accountStore: {isCurrentUser}} = useStore();
+    const {loadSet, isLoading, setIsLoading} = flashCardStore;
     const {id} = useParams();
     const [set, setSet] = useState<FlashCardSet | undefined>(undefined);
     const [index, setIndex] = useState<number>(1);
@@ -53,17 +54,36 @@ export default observer (function FlashCardSetItem() {
             loadSet(id!).then(set => setSet(set));
         }
         return () => {
-            setLoading(false);
+            setIsLoading(false);
         }
-    }, [id, loadSet, setLoading, setSet, set])
+    }, [id, loadSet, setIsLoading, setSet, set])
 
     return (
         <>
-            {loading || set === undefined ? (
+            {isLoading || set === undefined ? (
                 <Loader active inline/>
             ) : (
                 <>
-                    <CardSetHeaderComponent setName={set.name} />
+                    <Grid columns='equal' verticalAlign='middle' className='set-words-list-item'>
+                        <Grid.Column>
+                            <CardSetHeaderComponent setName={set.name} />
+                        </Grid.Column>
+                        { isCurrentUser(set.meta.createdBy) && 
+                            <Grid.Column textAlign='right' >
+                                <Button.Group>
+                                    <Button
+                                        as={Link} 
+                                        to={`/edit-set/${id}`}
+                                        icon='edit'
+                                    />
+                                    <Button
+                                        icon='trash alternate'
+                                        negative
+                                    />
+                                </Button.Group>
+                            </Grid.Column>
+                        }
+                    </Grid>
                     <CardSetExpandedComponent 
                         word={set.words[index - 1]}
                         isFlipped={isFlipped}
@@ -79,7 +99,7 @@ export default observer (function FlashCardSetItem() {
                     />
                     <SetWordsList 
                         setId={set.id}
-                        isSetOwner={set.meta.createdBy === accountStore.authUser?.id}
+                        isSetOwner={isCurrentUser(set.meta.createdBy)}
                         words={set.words}
                     />
                 </>

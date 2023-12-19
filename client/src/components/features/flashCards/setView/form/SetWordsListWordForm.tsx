@@ -5,7 +5,7 @@ interface Props {
     setWord: (word: string) => void
 }
 
-export default function SetWordsListWordInput({ initial, setWord }: Props) {
+export default function SetWordsListWordForm({ initial, setWord }: Props) {
 
     return ( 
         <Input 

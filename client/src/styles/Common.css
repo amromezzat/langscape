@@ -2,10 +2,11 @@
 .borderless-button:hover,
 .borderless-button:focus-within {
     border: none !important;
+    background-color: transparent !important;
     box-shadow: none !important;
 }
 
-.no-padding-left-segment {
+.no-padding-left {
     padding-left: 0 !important;
 }
 
@@ -15,4 +16,22 @@
 
 .data {
     white-space: pre;
+}
+
+.no-padding-bot {
+    padding-bottom: 0 !important;
+}
+
+.no-padding-top {
+    padding-top: 0 !important;
+}
+
+.red-popup, 
+.red-popup:before {
+    color: white !important;
+    background-color: #b72a2a !important;
+}
+
+.no-padding {
+    padding: 0 !important;
 }

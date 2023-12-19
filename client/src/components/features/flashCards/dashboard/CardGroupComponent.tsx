@@ -7,7 +7,7 @@ import '../../../../styles/Common.css';
 
 export default observer (function CardGroupComponent() {
     const {flashCardStore} = useStore();
-    const {setsRegistery: cardsSets, loadSets, loading} = flashCardStore;
+    const {setsRegistery: cardsSets, loadSets, isLoading} = flashCardStore;
 
     useEffect(() => {
         if (cardsSets.size === 0) {
@@ -17,14 +17,14 @@ export default observer (function CardGroupComponent() {
     
     return (
         <Grid textAlign='left'>
-            { !loading && cardsSets.size === 0 && 
+            { !isLoading && cardsSets.size === 0 && 
                 <Container style={{ marginTop: '7em' }}>
                     <Header as='h2' className='white-text'>
                         Nothing to show here!    
                     </Header>
                 </Container>    
             }
-            { !loading && Array.from(cardsSets).map(([setId, cardSet]) => (
+            { !isLoading && Array.from(cardsSets).map(([setId, cardSet]) => (
                     <Grid.Column mobile={16} tablet={8} computer={4} key={setId} >
                         <CardSetComponent cardSet={cardSet}/>
                     </Grid.Column>

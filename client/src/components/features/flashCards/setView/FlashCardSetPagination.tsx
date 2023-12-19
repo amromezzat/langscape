@@ -13,7 +13,7 @@ export default function FlashCardSetPagination({index, wordsCount, handleLeftCli
         basic: true, 
         inverted: true, 
         circular: true, 
-        fitted: true, 
+        fitted: 'true', 
         size: 'large'
     };
     

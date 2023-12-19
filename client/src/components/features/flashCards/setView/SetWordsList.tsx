@@ -19,6 +19,7 @@ export default function SetWordsList({ setId, isSetOwner, words }: Props) {
                         setId={setId} 
                         isSetOwner={isSetOwner} 
                         word={word} 
+                        key={word.id}
                     />
                 })}
             </List>

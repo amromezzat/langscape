@@ -49,4 +49,8 @@ export default class UserStore {
             throw error;
         }
     }
+
+    isCurrentUser = (userId: string) => {
+        return userId === this.authUser?.id;
+    }
 }

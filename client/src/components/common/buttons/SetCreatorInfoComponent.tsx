@@ -24,6 +24,10 @@ export const UserInfoComponent = ({ isDisabled, buttonProps, setMeta, onClick, o
         onOpen?.();
     }
 
+    function isOwner() {
+        return accountStore.isCurrentUser(setMeta.createdBy);
+    }
+
     function handleOnClick(event: SyntheticEvent) {
         if (!isDisabled) {
             onClick?.(event, user!);
@@ -39,7 +43,7 @@ export const UserInfoComponent = ({ isDisabled, buttonProps, setMeta, onClick, o
                 >
                 <Icon
                     fitted
-                    name='user' 
+                    name={isOwner() ? 'user' : 'user outline'} 
                     color='blue'
                 />
                 </Button>
@@ -53,7 +57,7 @@ export const UserInfoComponent = ({ isDisabled, buttonProps, setMeta, onClick, o
                 { 
                     user?.displayName ? (
                         <p>
-                            <strong>Created By: </strong>{ user.displayName }
+                            <strong>Created By: </strong>{ user.displayName }{isOwner() && '(you)'}
                         </p>
                     ) : (
                         <>

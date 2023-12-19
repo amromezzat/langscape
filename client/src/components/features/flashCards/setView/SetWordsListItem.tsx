@@ -1,10 +1,10 @@
 import { Button, Grid, Icon, List, Segment } from "semantic-ui-react";
-import '../../../../styles/SetWordsList.css'
 import { FlashCardWord } from "../../../../models/flashCards/flashCardWord";
 import { useState } from "react";
 import { useStore } from "../../../../stores/core/store";
-import SetWordsListWordInput from "./form/SetWordsListWordInput";
+import SetWordsListWordForm from "./form/SetWordsListWordForm";
 import '../../../../styles/Common.css';
+import '../../../../styles/SetWordsList.css'
 
 interface Props {
     setId: string,
@@ -14,12 +14,12 @@ interface Props {
 
 export default function SetWordsListItem({ setId, isSetOwner, word }: Props) {
     const [isEditing, setIsEditing] = useState(false);
-    const {flashCardStore: { updateWord }} = useStore();
+    const { flashCardStore: { updateWord } } = useStore();
     const [modifiedWord, setModifiedWord] = useState(word.word);
     const [modifiedTranslation, setModifiedTranslation] = useState(word.translation);
 
     function handleClick() {
-        if(isEditing) {
+        if (isEditing) {
             word.word = modifiedWord;
             word.translation = modifiedTranslation;
             updateWord(setId, word);
@@ -31,24 +31,24 @@ export default function SetWordsListItem({ setId, isSetOwner, word }: Props) {
         <List.Item className='set-words-list-item'>
             <List.Content>
                 <Segment textAlign='center'>
-                    <Grid columns={'equal'} verticalAlign='middle'>
+                    <Grid columns='equal' verticalAlign='middle'>
                         <Grid.Column float='left' >
-                            { isEditing ? 
-                                <SetWordsListWordInput 
+                            {isEditing ?
+                                <SetWordsListWordForm
                                     initial={word.word}
                                     setWord={setModifiedWord}
-                                /> : 
-                                word.word 
+                                /> :
+                                word.word
                             }
                         </Grid.Column>
                         <Grid.Column> | </Grid.Column>
                         <Grid.Column textAlign='left'>
-                            { isEditing ? 
-                                <SetWordsListWordInput 
+                            {isEditing ?
+                                <SetWordsListWordForm
                                     initial={word.translation}
                                     setWord={setModifiedTranslation}
-                                /> : 
-                                word.translation 
+                                /> :
+                                word.translation
                             }
                         </Grid.Column>
                         {isSetOwner &&
@@ -61,8 +61,8 @@ export default function SetWordsListItem({ setId, isSetOwner, word }: Props) {
                                 >
                                     <Icon
                                         fitted
-                                        name={ isEditing ? 'edit' : 'edit outline' } 
-                                        color={ isEditing ? 'yellow' : 'grey' }    
+                                        name={isEditing ? 'edit' : 'edit outline'}
+                                        color={isEditing ? 'yellow' : 'grey'}
                                     />
                                 </Button>
                             </Grid.Column>

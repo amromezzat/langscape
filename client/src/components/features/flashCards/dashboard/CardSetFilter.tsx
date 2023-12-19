@@ -10,7 +10,7 @@ export default observer (function CardSetFilter() {
         text: text,
         value: key
       }));
-      const { flashCardStore: { loading, setFilter, clearFilter } } = useStore();
+      const { flashCardStore: { isLoading, setFilter, clearFilter } } = useStore();
 
     function handleOnChange(e: any, { value }: DropdownProps) {
         const filter = setServerFilterOptions.get(value as string);
@@ -22,9 +22,9 @@ export default observer (function CardSetFilter() {
     }
     
     return (
-        <Segment textAlign='left' basic className='no-padding-left-segment'>
+        <Segment textAlign='left' basic className='no-padding-left'>
             <Dropdown
-                disabled={ loading }
+                disabled={ isLoading }
                 selection
                 options={ options }
                 defaultValue={ options[0].value }
