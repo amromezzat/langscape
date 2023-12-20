@@ -1,7 +1,8 @@
 import { observer } from "mobx-react-lite"
-import { Dropdown, DropdownProps, Segment } from "semantic-ui-react";
-import { setFilterOptions, setServerFilterOptions } from "../../../../constants/cardSetFilterOptions";
+import { Dropdown, DropdownProps } from "semantic-ui-react";
+import { setFilterOptions, setFilterType } from "../../../../constants/cardSetFilterOptions";
 import { useStore } from "../../../../stores/core/store";
+import { useNavigate } from "react-router-dom";
 import "../../../../styles/Common.css"
 
 export default observer (function CardSetFilter() {
@@ -9,11 +10,13 @@ export default observer (function CardSetFilter() {
         key: key,
         text: text,
         value: key
-      }));
-      const { flashCardStore: { isLoading, setFilter, clearFilter } } = useStore();
+    }));
+    const { flashCardStore: { isLoading, setFilter, clearFilter, menuFilter }} = useStore();
+    const navigate = useNavigate();
 
-    function handleOnChange(e: any, { value }: DropdownProps) {
-        const filter = setServerFilterOptions.get(value as string);
+    function handleOnChange(_e: any, { value }: DropdownProps) {
+        navigate('/sets');
+        const filter = value as setFilterType;
         if(filter) {
             setFilter(filter);
         } else {
@@ -22,14 +25,14 @@ export default observer (function CardSetFilter() {
     }
     
     return (
-        <Segment textAlign='left' basic className='no-padding-left'>
-            <Dropdown
-                disabled={ isLoading }
-                selection
-                options={ options }
-                defaultValue={ options[0].value }
-                onChange={ handleOnChange }
-            />         
-        </Segment>
+        <Dropdown 
+            text='Sets' 
+            pointing='top right'
+            disabled={ isLoading }
+            options={ options }
+            onChange={ handleOnChange }
+            value={ menuFilter }
+            selectOnBlur={false}
+        />  
     )
 });

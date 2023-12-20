@@ -3,6 +3,7 @@ import { AuthUser, User } from "../../models/user/user";
 import { AuthUserForm } from "../../models/user/authUserForm";
 import { authApi as userApi } from "../../services/api/features/flashcards/userApi";
 import { setToken } from "../../services/api/core/apiConfig";
+import { router } from "../../routes/Routes";
 
 export default class UserStore {
     authUser: AuthUser | undefined = undefined;
@@ -28,6 +29,12 @@ export default class UserStore {
         } catch (error) {
             throw error;
         }
+    }
+
+    logout = () => {
+        setToken(undefined);
+        this.authUser = undefined;
+        router.navigate('/');
     }
 
     getUserById = async (id: string) => {

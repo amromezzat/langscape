@@ -4,8 +4,9 @@ import { useStore } from '../../stores/core/store';
 import LoginForm from '../features/auth/LoginForm';
 import ModalContainer from '../common/modals/ModalContainer';
 import { Outlet } from 'react-router-dom';
-import ConfirmationPrompt from '../common/Prompts/ConfirmationPrompt';
+import ConfirmationPrompt from '../common/prompts/ConfirmationPrompt';
 import '../../styles/Home.css'
+import NavigationBar from '../common/bars/MenuBar';
 
 export default observer(function App() {
   const { accountStore: authStore, modalStore } = useStore();
@@ -15,13 +16,16 @@ export default observer(function App() {
       <ModalContainer />
       <ConfirmationPrompt />
       <Container style={{ marginTop: '7em' }}>
-        {
-          authStore.isLoggedIn ? 
-            <Outlet /> :
-            <Button onClick={ () => modalStore.openModal(<LoginForm urlRoute='/sets' />) } size='huge' inverted>
-              Login
-            </Button>
-        }
+      {
+        authStore.isLoggedIn ? 
+          <>
+            <NavigationBar />
+            <Outlet />
+          </> :
+          <Button onClick={ () => modalStore.openModal(<LoginForm urlRoute='/sets' />) } size='huge' inverted>
+            Login
+          </Button>
+      }
       </Container>
     </Segment>
   );

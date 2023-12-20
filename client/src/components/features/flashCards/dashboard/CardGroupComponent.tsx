@@ -1,4 +1,4 @@
-import { Container, Grid, Header } from "semantic-ui-react";
+import { Container, Grid, Header, Loader } from "semantic-ui-react";
 import CardSetComponent from "./CardSetComponent";
 import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
@@ -16,20 +16,26 @@ export default observer (function CardGroupComponent() {
       }, [flashCardStore, loadSets, cardsSets]);
     
     return (
-        <Grid textAlign='left'>
-            { !isLoading && cardsSets.size === 0 && 
-                <Container style={{ marginTop: '7em' }}>
-                    <Header as='h2' className='white-text'>
-                        Nothing to show here!    
-                    </Header>
-                </Container>    
+        isLoading ? (
+            <Loader active inline />
+        ) : (
+            <Grid textAlign='left'>
+            {
+                cardsSets.size === 0 ? (
+                    <Container style={{ marginTop: '7em' }}>
+                        <Header as='h2' className='white-text'>
+                            Nothing to show here!    
+                        </Header>
+                    </Container>    
+                ) : (
+                    Array.from(cardsSets).map(([setId, cardSet]) => (
+                        <Grid.Column mobile={16} tablet={8} computer={4} key={setId} >
+                            <CardSetComponent cardSet={cardSet}/>
+                        </Grid.Column>
+                    )) 
+                )
             }
-            { !isLoading && Array.from(cardsSets).map(([setId, cardSet]) => (
-                    <Grid.Column mobile={16} tablet={8} computer={4} key={setId} >
-                        <CardSetComponent cardSet={cardSet}/>
-                    </Grid.Column>
-                )) 
-            }
-        </Grid>
+            </Grid>
+        )
     )
 });

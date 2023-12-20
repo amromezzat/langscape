@@ -18,13 +18,13 @@ interface Props {
 export default observer(function CardSetComponent({cardSet}: Props) {
     const { username } = useParams();
     const { flashCardStore } = useStore();
-    const { submittingFavoriteSetsId: submittingFavoriteSetId, addFavoriteSet, removeFavoriteSet } = flashCardStore;
+    const { submittingFavoriteSetsId, addFavoriteSet, removeFavoriteSet, setFilter } = flashCardStore;
 
     function handleUserInfoClick(event: SyntheticEvent, user: User) {
         event.preventDefault();
         if(user === undefined) return;
         
-        flashCardStore.setFilter('userId', user.id);
+        setFilter('userId', user.id);
         router.navigate(`/${user.username}/sets`);
     }
 
@@ -51,7 +51,7 @@ export default observer(function CardSetComponent({cardSet}: Props) {
                     <Grid.Column >
                         <FavoriteButtonComponent 
                             isFavorite={ cardSet.isFavorite }
-                            isSubmitting={ submittingFavoriteSetId.has(cardSet.id) }
+                            isSubmitting={ submittingFavoriteSetsId.has(cardSet.id) }
                             fieldProps={ {basic: true, floated: 'right', className: 'borderless-button'} }
                             onClick={ handleFavoriteClick }
                         />

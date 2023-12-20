@@ -43,8 +43,8 @@ export const UserInfoComponent = ({ isDisabled, buttonProps, setMeta, onClick, o
                 >
                 <Icon
                     fitted
-                    name={isOwner() ? 'user' : 'user outline'} 
-                    color='blue'
+                    name={ isOwner() ? 'user' : 'user outline' } 
+                    color={ setMeta.createdBy ? 'blue' : 'grey' }
                 />
                 </Button>
             }

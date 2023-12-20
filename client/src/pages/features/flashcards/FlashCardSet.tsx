@@ -14,7 +14,7 @@ import "../../../styles/SetWordsList.css"
 export default observer (function FlashCardSetList() {
     const swipeAnimationTime = 0.1;
     const {flashCardStore, accountStore: {isCurrentUser}, promptStore: {openPrompt}} = useStore();
-    const {isLoading, loadSet, setIsLoading, deleteSet} = flashCardStore;
+    const {isLoading, loadSet, setIsLoading, deleteSet, clearFilter} = flashCardStore;
     const {id} = useParams();
     const [set, setSet] = useState<FlashCardSet | undefined>(undefined);
     const [index, setIndex] = useState<number>(1);
@@ -70,17 +70,18 @@ export default observer (function FlashCardSetList() {
 
     useEffect(() => {
         if(id && set === undefined) {
+            clearFilter();
             loadSet(id!).then(set => setSet(set));
         }
         return () => {
             setIsLoading(false);
         }
-    }, [id, loadSet, setIsLoading, setSet, set])
+    }, [id, set, loadSet, setIsLoading, setSet, clearFilter])
 
     return (
         <>
             {isLoading || set === undefined ? (
-                <Loader active inline/>
+                <Loader active inline />
             ) : (
                 <>
                     <Grid columns='equal' verticalAlign='middle' className='set-words-list-item'>

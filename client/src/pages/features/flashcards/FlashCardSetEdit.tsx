@@ -15,22 +15,26 @@ export default observer (function FlashCardSetEdit() {
 
     const {id} = useParams();
     const [wordsForm, setWordsForm] = useState<FlashCardSetForm>(new FlashCardSetForm());
-    const {flashCardStore:{ loadSet, updateSet, createSet, isLoading }} = useStore();
+    const {flashCardStore:{ isLoading, loadSet, updateSet, createSet, clearFilter }} = useStore();
     const navigate = useNavigate();
 
     const validationSchema = Yup.object({
         name: Yup.string().required('The set name can\'t be empty'),
-        words: Yup.array().of(Yup.object().shape({
-            word: Yup.string().required('The word can\'t be empty'),
-            translation: Yup.string().required('The translation can\'t be empty')
-        }))
+        words: Yup.array()
+            .required()
+            .min(1, 'Set must contain at least one word')
+            .of(Yup.object().shape({
+                word: Yup.string().required('The word can\'t be empty'),
+                translation: Yup.string().required('The translation can\'t be empty')
+            }))
     })
 
     useEffect(() => {
+        clearFilter();
         if(id) {
             loadSet(id).then(set => setWordsForm(new FlashCardSetForm(set)));
         }
-    }, [id, loadSet])
+    }, [id, loadSet, clearFilter])
 
     function handleFormSubmit(setForm: FlashCardSetForm) {
         if(!setForm.id) {
@@ -52,7 +56,7 @@ export default observer (function FlashCardSetEdit() {
                     {({ handleSubmit, isValid, isSubmitting, dirty, values, setFieldValue }) => (
                         <Form className='ui form' onSubmit={handleSubmit} autoComplete='off'>
                             <Segment basic clearing className='no-padding'>
-                                <Button 
+                                {id && <Button 
                                     floated='left'
                                     content='Back to set'
                                     icon='left arrow'
@@ -61,10 +65,10 @@ export default observer (function FlashCardSetEdit() {
                                     as={Link}
                                     to={`/sets/${wordsForm.id}`}
                                     disabled={!wordsForm.id || isSubmitting}
-                                />
+                                />}
                                 <Button 
                                     floated='right'
-                                    content='Done'
+                                    content={id ? 'Done' : 'Create'}
                                     positive
                                     onClick={() => handleFormSubmit}
                                     type='submit'

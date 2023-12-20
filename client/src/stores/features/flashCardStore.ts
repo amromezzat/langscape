@@ -4,12 +4,14 @@ import { flashCardApi } from "../../services/api/features/flashcards/flashCardAp
 import { FlashCardWord } from "../../models/flashCards/flashCardWord";
 import { FlashCardSetDto } from "../../models/flashCards/flashCardSetDto";
 import { FlashCardSetForm } from "../../models/flashCards/flashCardSetForm";
+import { setFilterType, setServerFilterOptions } from "../../constants/cardSetFilterOptions";
 
 export default class FlashCardStore {
     setsRegistery = new Map<string, FlashCardSet>();
     isLoading = false;
     submittingFavoriteSetsId = new Set<string>();
     filters = new Map<string, any>();
+    menuFilter = setFilterType.all;
 
     constructor() {
         makeAutoObservable(this);
@@ -37,6 +39,8 @@ export default class FlashCardStore {
     }
 
     loadSet = async (setId: string) => {
+        this.clearFilter();
+
         this.setIsLoading(true);
         try {
             let set = await flashCardApi.getCardSet(setId);
@@ -72,20 +76,25 @@ export default class FlashCardStore {
         runInAction(() => this.submittingFavoriteSetsId.delete(setId));
     }
 
-    setFilter = (key: string, value?: string) => {
-        this.clearFilter();
+    setFilter = (key: string | setFilterType, value?: string) => {
+        this.filters.clear();
+
+        if(typeof key !== 'string') {
+            this.menuFilter = key;
+            key = setServerFilterOptions.get(key) ?? '';
+        }
         this.filters.set(key, value ?? true);
     }
 
     clearFilter = () => {
         this.filters.clear();
+        this.menuFilter = setFilterType.none;
     }
 
     updateWord = async (setId: string, word: FlashCardWord) => {
         try {
             await flashCardApi.updateWord(setId, word);
             this.updateSetWord(setId, word);
-
         } catch (error) {
             console.log(error);
         }
@@ -101,8 +110,8 @@ export default class FlashCardStore {
 
     createSet = async (set: FlashCardSetForm) => {
         try {
-            var createdSet = await flashCardApi.createSet(set);
-            this.updateSetRegistery(createdSet);
+            var setId = await flashCardApi.createSet(set);
+            return setId;
         } catch (error) {
             console.log(error);
         }

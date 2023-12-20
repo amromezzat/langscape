@@ -14,6 +14,6 @@ export const flashCardApi = {
     removeFavoriteSet: (setId: string) => apiRequest.del(favoritesEndPoint + setId),
     updateWord: (setId: string, word: FlashCardWord) => apiRequest.put(endPoint + setId, {'updatedWords': [word]}),
     updateSet: (setDto: FlashCardSetDto) => apiRequest.put(endPoint + `${setDto.id}`, setDto),
-    createSet: (set: FlashCardSetForm) => apiRequest.put<FlashCardSet>(endPoint, set),
+    createSet: (set: FlashCardSetForm) => apiRequest.post<FlashCardSet>(endPoint, set),
     deleteSet: (setId: string) => apiRequest.del(endPoint + setId)
 }
