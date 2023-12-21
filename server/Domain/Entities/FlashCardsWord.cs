@@ -6,6 +6,7 @@ namespace Domain.Entities
     {
         public string Word { get; set; }
         public string Translation { get; set; }
+        public int Position { get; set; }
         public FlashCardsSet Set { get; set; }
     }
 }

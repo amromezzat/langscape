@@ -17,7 +17,7 @@ namespace Application.Mapping
             CreateMap<FlashCardsWord, GetFlashCardsWordDto>();
 
             CreateMap<FlashCardsSet, GetFlashCardsSetDto>()
-                .ForMember(d => d.Words, o => o.MapFrom(s => s.Words.Take(maximumNumberOfWords)))
+                .ForMember(d => d.Words, o => o.MapFrom(s => s.Words.OrderBy(w => w.Position).Take(maximumNumberOfWords)))
                 .ForMember(d => d.IsFavorite, o => o.MapFrom(s => favorites.Contains(s.Id)))
                 .ForMember(d => d.Meta, o => o.MapFrom(s => new GetFlashCardsSetDto.MetaData()
                 {

@@ -2,13 +2,13 @@ export class FlashCardFormWord {
     id?: string = undefined;
     word: string = '';
     translation: string = '';
-    index: number = 0;
+    position: number = 0;
     isDeleted: boolean = false;
 
-    constructor(word: string, translation: string, index: number, id?: string) {
+    constructor(word: string, translation: string, position: number, id?: string) {
         this.word = word;
         this.translation = translation;
-        this.index = index;
+        this.position = position;
         this.id = id;
     }
 

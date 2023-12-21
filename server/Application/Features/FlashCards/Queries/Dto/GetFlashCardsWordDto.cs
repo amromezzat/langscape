@@ -7,5 +7,6 @@ namespace Application.Features.FlashCards.Queries.Dto
         public Guid Id { get; set; }
         public string Word { get; set; }
         public string Translation { get; set; }
+        public int Position { get; set; }
     }
 }
