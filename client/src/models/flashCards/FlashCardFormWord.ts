@@ -2,8 +2,9 @@ export class FlashCardFormWord {
     id?: string = undefined;
     word: string = '';
     translation: string = '';
-    position: number = 0;
     isDeleted: boolean = false;
+    position: number = 0;
+    updated: boolean = false;
 
     constructor(word: string, translation: string, position: number, id?: string) {
         this.word = word;

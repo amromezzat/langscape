@@ -2,9 +2,9 @@ import { makeAutoObservable, reaction, runInAction } from "mobx";
 import { FlashCardSet } from "../../models/flashCards/flashCardSet";
 import { flashCardApi } from "../../services/api/features/flashcards/flashCardApi";
 import { FlashCardWord } from "../../models/flashCards/flashCardWord";
-import { FlashCardSetDto } from "../../models/flashCards/flashCardSetDto";
-import { FlashCardSetForm } from "../../models/flashCards/flashCardSetForm";
+import { FlashCardSetUpdateDto } from "../../models/flashCards/flashCardSetUpdateDto";
 import { setFilterType, setServerFilterOptions } from "../../constants/cardSetFilterOptions";
+import { FlashCardSetCreateDto } from "../../models/flashCards/flashCardSetCreateDto";
 
 export default class FlashCardStore {
     setsRegistery = new Map<string, FlashCardSet>();
@@ -100,7 +100,7 @@ export default class FlashCardStore {
         }
     }
 
-    updateSet = async (setDto: FlashCardSetDto) => {
+    updateSet = async (setDto: FlashCardSetUpdateDto) => {
         try {
             await flashCardApi.updateSet(setDto);
         } catch (error) {
@@ -108,7 +108,7 @@ export default class FlashCardStore {
         }
     }
 
-    createSet = async (set: FlashCardSetForm) => {
+    createSet = async (set: FlashCardSetCreateDto) => {
         try {
             var setId = await flashCardApi.createSet(set);
             return setId;
