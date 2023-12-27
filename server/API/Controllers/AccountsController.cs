@@ -1,6 +1,8 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Features.Users.Commands;
+using Application.Features.Users.Dto;
 using Application.Features.Users.Queries;
 using Application.Users.Dto;
 using Langscape.Shared;
@@ -26,6 +28,13 @@ namespace API.Controllers
         public async Task<ActionResult<IResult<AuthUserDto>>> Login(CancellationToken cancellationToken, LoginDto loginDto)
         {
             return await _mediator.Send(new LoginCommand { LoginDto = loginDto }, cancellationToken);
+        }
+
+        [AllowAnonymous]
+        [HttpPost("register")]
+        public async Task<ActionResult<IResult<AuthUserDto>>> Register(CancellationToken cancellationToken, RegisterDto registerDto)
+        {
+            return await _mediator.Send(new RegisterCommand { RegisterDto = registerDto }, cancellationToken);
         }
 
         [HttpGet("{id}")]
