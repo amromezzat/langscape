@@ -3,7 +3,7 @@ import { AuthUser, User } from "../../models/user/user";
 import { AuthUserForm } from "../../models/user/authUserForm";
 import { authApi as userApi } from "../../services/api/features/flashcards/userApi";
 import { setToken } from "../../services/api/core/apiConfig";
-import { router } from "../../routes/Routes";
+import { RegisterUserForm } from "../../models/user/registerUserForm";
 
 export default class UserStore {
     authUser: AuthUser | undefined = undefined;
@@ -21,9 +21,19 @@ export default class UserStore {
         return !!this.token;
     }
 
-    login = async (cred: AuthUserForm) => {
+    login = async (userAuth: AuthUserForm) => {
         try {
-            const user = await userApi.login(cred);
+            const user = await userApi.login(userAuth);
+            setToken(user.token);
+            runInAction(() => this.authUser = user);
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    register = async (userRegister: RegisterUserForm) => {
+        try {
+            const user = await userApi.register(userRegister);
             setToken(user.token);
             runInAction(() => this.authUser = user);
         } catch (error) {
@@ -34,7 +44,6 @@ export default class UserStore {
     logout = () => {
         setToken(undefined);
         this.authUser = undefined;
-        router.navigate('/');
     }
 
     getUserById = async (id: string) => {

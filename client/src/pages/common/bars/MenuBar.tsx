@@ -4,15 +4,22 @@ import { observer } from 'mobx-react-lite';
 import { useStore } from '../../../stores/core/store';
 import CardSetFilter from '../../../components/features/flashCards/dashboard/CardSetFilter';
 import { setFilterType } from '../../../constants/cardSetFilterOptions';
+import { router } from '../../../routes/Routes';
 import '../../../styles/MenuBar.css'
 
 export default observer(function NavigationBar() {
-    const {accountStore: {authUser, logout}, flashCardStore: {setFilter}} = useStore();
+    const {accountStore: { authUser, logout }, flashCardStore: { setFilter, clearFilter }} = useStore();
     const navigate = useNavigate();
 
     function handleShowUserSet() {
         navigate(`/sets`);
         setFilter(setFilterType.created);
+    }
+
+    function handleLogout() {
+        logout();
+        clearFilter();
+        router.navigate('/');
     }
 
     return (
@@ -38,7 +45,7 @@ export default observer(function NavigationBar() {
                     <Dropdown pointing='top left' text={authUser?.displayName}>
                         <Dropdown.Menu>
                             <Dropdown.Item onClick={handleShowUserSet} text='My Sets' icon='list alternate' />
-                            <Dropdown.Item onClick={logout} text='Logout' icon='power' />
+                            <Dropdown.Item onClick={handleLogout} text='Logout' icon='power' />
                         </Dropdown.Menu>
                     </Dropdown>
                 </Menu.Item>
