@@ -37,6 +37,12 @@ namespace API.Controllers
             return await _mediator.Send(new RegisterCommand { RegisterDto = registerDto }, cancellationToken);
         }
 
+        [HttpGet("current")]
+        public async Task<ActionResult<IResult<UserDto>>> GetCurrentUser(CancellationToken cancellationToken)
+        {
+            return await _mediator.Send(new GetUserQuery { Username = User.Identity.Name }, cancellationToken);
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<IResult<UserDto>>> GetUserById(CancellationToken cancellationToken, string id)
         {

@@ -1,7 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import 'semantic-ui-css/semantic.min.css'
 import reportWebVitals from './reportWebVitals';
 import { StoreProvider } from './stores/core/StoreProvider';
 import FlashCardStore from './stores/features/flashCardStore';
@@ -11,11 +9,15 @@ import { Store } from './stores/core/store';
 import ModalStore from './stores/common/modalStore';
 import UserStore from './stores/features/accountStore';
 import PromptStore from './stores/common/promptStore';
+import AuthenticationStore from './stores/features/authenticationStore';
+import 'semantic-ui-css/semantic.min.css'
+import './index.css';
 
+const authenticationStore = new AuthenticationStore();
 const store: Store = {
   modalStore: new ModalStore(),
   promptStore: new PromptStore(),
-  accountStore: new UserStore(),
+  accountStore: new UserStore(authenticationStore),
   flashCardStore: new FlashCardStore()
 }
 const root = ReactDOM.createRoot(

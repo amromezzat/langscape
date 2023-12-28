@@ -8,7 +8,7 @@ import { router } from '../../../routes/Routes';
 import '../../../styles/MenuBar.css'
 
 export default observer(function NavigationBar() {
-    const {accountStore: { authUser, logout }, flashCardStore: { setFilter, clearFilter }} = useStore();
+    const {accountStore: { user: authUser, logout }, flashCardStore: { setFilter, clearFilter }} = useStore();
     const navigate = useNavigate();
 
     function handleShowUserSet() {

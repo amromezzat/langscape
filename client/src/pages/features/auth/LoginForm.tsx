@@ -3,17 +3,17 @@ import { Button, Header, Label } from "semantic-ui-react"
 import { observer } from "mobx-react-lite"
 import { useStore } from "../../../stores/core/store"
 import ValidatableTextInput from "../../../components/common/form/ValidatableTextInput"
-import { AuthUserForm } from "../../../models/user/authUserForm"
+import { LoginUserForm } from "../../../models/user/loginUserForm"
 
 export default observer(function LoginForm() {
     const { accountStore: authStore, modalStore } = useStore();
-    const initialValues: AuthUserForm = {
+    const initialValues: LoginUserForm = {
         email: '',
         password: '',
         error: undefined
      };
 
-    async function onFormSubmit(formData: AuthUserForm, {setErrors}: FormikHelpers<AuthUserForm>) {
+    async function onFormSubmit(formData: LoginUserForm, {setErrors}: FormikHelpers<LoginUserForm>) {
         try {
             await authStore.login(formData);
             modalStore.closeModal(true);

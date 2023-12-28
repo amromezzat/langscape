@@ -1,31 +1,40 @@
-import { makeAutoObservable, runInAction } from "mobx";
-import { AuthUser, User } from "../../models/user/user";
-import { AuthUserForm } from "../../models/user/authUserForm";
+import { makeAutoObservable, reaction, runInAction } from "mobx";
+import { User } from "../../models/user/user";
+import { LoginUserForm } from "../../models/user/loginUserForm";
 import { authApi as userApi } from "../../services/api/features/flashcards/userApi";
-import { setToken } from "../../services/api/core/apiConfig";
 import { RegisterUserForm } from "../../models/user/registerUserForm";
+import AuthenticationStore from "./authenticationStore";
 
 export default class UserStore {
-    authUser: AuthUser | undefined = undefined;
+    private _authenticationStore: AuthenticationStore;
+    
+    user: User | undefined = undefined;
     usersRegistery = new Map<string, User>();
 
-    constructor() {
+    constructor(authenticationStore: AuthenticationStore) {
+        this._authenticationStore = authenticationStore
+
         makeAutoObservable(this);
+
+        reaction(
+            () => this._authenticationStore.isTokenValid,
+            () => {
+                if(!this._authenticationStore.isTokenValid) {
+                    this.user = undefined;
+                }
+            }
+        )
     }
 
-    get token(): string | undefined {
-        return this.authUser?.token;
+    get hasActiveSession() {
+        return !!this._authenticationStore.isTokenValid;
     }
 
-    get isLoggedIn() {
-        return !!this.token;
-    }
-
-    login = async (userAuth: AuthUserForm) => {
+    login = async (userAuth: LoginUserForm) => {
         try {
-            const user = await userApi.login(userAuth);
-            setToken(user.token);
-            runInAction(() => this.authUser = user);
+            const authenticatedUser = await userApi.login(userAuth);
+            this._authenticationStore.setToken(authenticatedUser.token);
+            runInAction(() => this.user = authenticatedUser);
         } catch (error) {
             throw error;
         }
@@ -33,17 +42,27 @@ export default class UserStore {
 
     register = async (userRegister: RegisterUserForm) => {
         try {
-            const user = await userApi.register(userRegister);
-            setToken(user.token);
-            runInAction(() => this.authUser = user);
+            const authenticatedUser = await userApi.register(userRegister);
+            this._authenticationStore.setToken(authenticatedUser.token);
+            runInAction(() => this.user = authenticatedUser);
         } catch (error) {
             throw error;
         }
     }
 
     logout = () => {
-        setToken(undefined);
-        this.authUser = undefined;
+        this._authenticationStore.clearToken();
+        this.user = undefined;
+    }
+
+    getCurrentUser = async() => {
+        try {
+            const user = await userApi.getCurrentUser();
+            runInAction(() => this.user = user);
+            return user;
+        } catch (error) {
+            throw error;
+        }
     }
 
     getUserById = async (id: string) => {
@@ -67,6 +86,6 @@ export default class UserStore {
     }
 
     isCurrentUser = (userId: string) => {
-        return userId === this.authUser?.id;
+        return userId === this.user?.id;
     }
 }

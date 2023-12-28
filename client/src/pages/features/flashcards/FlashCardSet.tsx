@@ -7,8 +7,8 @@ import { FlashCardSet } from "../../../models/flashCards/flashCardSet";
 import { Button, Grid, Loader } from "semantic-ui-react";
 import CardSetExpandedComponent, { MovementType } from "../../../components/features/flashCards/setView/SetFlipCardComponent";
 import FlashCardSetPagination from "../../../components/features/flashCards/setView/FlashCardSetPagination";
-import { sleep } from "../../../services/api/core/utility";
 import SetWordsList from "../../../components/features/flashCards/setView/SetWordsList";
+import { sleep } from "../../../extensions/asyncExtensions";
 import "../../../styles/SetWordsList.css"
 
 export default observer (function FlashCardSetList() {

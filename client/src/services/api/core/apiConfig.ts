@@ -1,6 +1,6 @@
 import axios from 'axios';
 import HandleError from './apiErrorHandler';
-import { sleep } from './utility';
+import { sleep } from '../../../extensions/asyncExtensions';
 
 const axiosInstance = axios.create();
 

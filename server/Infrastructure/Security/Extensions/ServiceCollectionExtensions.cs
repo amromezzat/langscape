@@ -5,9 +5,6 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence.Contexts;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Infrastructure.Security.Authorization;
 using Infrastructure.Security.Services.Impl;
 
@@ -46,18 +43,7 @@ namespace Infrastructure.Security.Extensions
             })
             .AddEntityFrameworkStores<AppDbContext>();
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["TokenKey"]));
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(opt => 
-                {
-                    opt.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = key,
-                        ValidateIssuer = false,
-                        ValidateAudience = false
-                    };
-                });
+            TokenService.AddToAuthenticationService(services, configuration);
 
             return services;
         }
