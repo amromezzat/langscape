@@ -25,7 +25,7 @@ builder.Services.AddApplicationLayer();
 builder.Services.AddPersistenceLayer(builder.Configuration);
 builder.Services.AddInfrastructureLayer(builder.Configuration);
 builder.Services.AddApiLayer();
-
+builder.Services.AddLogging();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
