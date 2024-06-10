@@ -1,8 +1,10 @@
 using System.IO;
-using Infrastructure.Logging;
 using Infrastructure.Logging.Impl;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
+using IExternalLogger = NLog.ILogger;
+using ILogger = Infrastructure.Logging.ILogger;
 
 namespace Infrastructure.Extensions
 {
@@ -10,14 +12,15 @@ namespace Infrastructure.Extensions
     {
         private const string LogFileName = "nlog.config";
 
-        public static void AddLogging(this IServiceCollection services)
+        public static void AddExternalLogging(this IServiceCollection services)
         {
-            services.AddSingleton<ILogger, Logger>();
-
             services.AddLogging(configure =>
             {
+                configure.ClearProviders();
+                configure.SetMinimumLevel(LogLevel.Trace);
                 configure.AddNLog(Path.Combine(Directory.GetCurrentDirectory(), LogFileName));
             });
+            services.AddSingleton<ILogger, Logger>();
         }
     }
 }

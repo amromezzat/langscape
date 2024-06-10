@@ -3,9 +3,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Services;
 using Domain.Entities;
-using Langscape.Shared.Implementation;
+using Langscape.Shared.Impl;
 using MediatR;
 using Persistence.Repositories;
+using Shared.Common.Exceptions.Impl;
 
 namespace Application.Features.FlashCards.Commands
 {
@@ -30,14 +31,14 @@ namespace Application.Features.FlashCards.Commands
             var set = await _unitOfWork.GetRepository<FlashCardsSet>().GetByIdAsync(command.Id);
             if (set == null)
             {
-                return Result<Unit>.Failure($"Set doesn't exist.");
+                throw new NotFoundException($"Set with id {command.Id} doesn't exist.");
             }
 
             var userId = _userAccessor.GetUserId();
             var favorite = await _unitOfWork.GetRepository<FlashCardSetFavorite>().GetByIdAsync(userId, command.Id);
             if (favorite != null)
             {
-                return Result<Unit>.Failure($"Set is already added to favorites.");
+                throw new InvalidActionException($"Set is already in favorites.");
             }
 
             await _unitOfWork.GetRepository<FlashCardSetFavorite>()

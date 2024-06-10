@@ -1,10 +1,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Features.FlashCards.Queries.Dto;
-using Application.Features.FlashCards.Validators;
 using Domain.Entities;
-using FluentValidation;
-using Langscape.Shared.Implementation;
+using Langscape.Shared.Impl;
 using MediatR;
 using Persistence.Repositories;
 
@@ -13,14 +11,6 @@ namespace Application.Features.FlashCards.Commands
     public class EditCardsSetCommand : IRequest<Result<Unit>>
     {
         public EditFlashCardsSetDto FlashCardSet { get; set; }
-    }
-
-    public class EditCardsSetCommandValidator : AbstractValidator<EditCardsSetCommand>
-    {
-        public EditCardsSetCommandValidator()
-        {
-            RuleFor(x => x.FlashCardSet).SetValidator(new EditCardsSetValidator());
-        }
     }
 
     internal class EditCardsSetCommandHandler : IRequestHandler<EditCardsSetCommand, Result<Unit>>

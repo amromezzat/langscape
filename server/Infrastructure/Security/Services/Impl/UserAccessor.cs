@@ -17,5 +17,11 @@ namespace Infrastructure.Security.Services.Impl
         {
             return _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
         }
+
+        public bool TryGetUserId(out string userId)
+        {
+            userId = _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
+            return userId != null;
+        }
     }
 }

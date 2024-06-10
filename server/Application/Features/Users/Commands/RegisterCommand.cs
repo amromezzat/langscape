@@ -4,8 +4,7 @@ using Application.Features.Users.Dto;
 using Application.Features.Users.Services;
 using Application.Services;
 using Application.Users.Dto;
-using Domain.Exceptions.Register;
-using Langscape.Shared.Implementation;
+using Langscape.Shared.Impl;
 using MediatR;
 
 namespace Application.Features.Users.Commands
@@ -28,15 +27,8 @@ namespace Application.Features.Users.Commands
 
         public async Task<Result<AuthUserDto>> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
-            try 
-            {
-                var user = await _userAuthenticator.Register(request.RegisterDto) ?? throw new RegisterException();
-                return Result<AuthUserDto>.Success(_userService.CreateAuthUserDto(user));
-            }
-            catch (RegisterException exception) 
-            {
-                return Result<AuthUserDto>.Failure(exception.Message).WithCode(400);
-            }
+            var user = await _userAuthenticator.Register(request.RegisterDto);
+            return Result<AuthUserDto>.Success(_userService.CreateAuthUserDto(user));
         }
     }
 }

@@ -35,6 +35,7 @@ namespace Infrastructure.Security.Authorization
 
             if (userId == null) 
             {
+                context.Fail();
                 return;
             }
 

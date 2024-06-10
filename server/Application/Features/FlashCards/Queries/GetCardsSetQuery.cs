@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Features.FlashCards.Queries.Dto;
@@ -7,7 +6,7 @@ using Application.Features.FlashCards.Services;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Domain.Entities;
-using Langscape.Shared.Implementation;
+using Langscape.Shared.Impl;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Repositories;

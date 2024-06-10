@@ -2,7 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Domain.Entities;
-using Langscape.Shared.Implementation;
+using Langscape.Shared.Impl;
 using MediatR;
 using Persistence.Repositories;
 

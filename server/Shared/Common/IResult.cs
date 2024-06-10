@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Net;
 
 namespace Langscape.Shared
 {
@@ -12,7 +12,7 @@ namespace Langscape.Shared
         /// <summary>
         /// Server messages including failing or extra info
         /// </summary>
-        IReadOnlyList<string> Messages { get; }
+        string Title { get; }
 
         /// <summary>
         /// True if the request succeeded
@@ -32,6 +32,6 @@ namespace Langscape.Shared
         /// <summary>
         /// Response status code
         /// </summary>
-        int Code { get; }
+        HttpStatusCode Code { get; }
     }
 }

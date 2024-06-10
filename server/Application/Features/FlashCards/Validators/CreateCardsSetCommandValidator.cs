@@ -1,8 +1,17 @@
+using Application.Features.FlashCards.Commands;
 using Domain.Entities;
 using FluentValidation;
 
 namespace Application.Features.FlashCards.Validators
 {
+    public class CreateCardsSetCommandValidator : AbstractValidator<CreateCardsSetCommand>
+    {
+        public CreateCardsSetCommandValidator()
+        {
+            RuleFor(x => x.FlashCardSet).SetValidator(new CreateCardsSetValidator());
+        }
+    }
+
     public class CreateCardsSetValidator : AbstractValidator<FlashCardsSet>
     {
         public CreateCardsSetValidator()

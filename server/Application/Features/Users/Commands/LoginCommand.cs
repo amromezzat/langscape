@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Application.Features.Users.Services;
 using Application.Services;
 using Application.Users.Dto;
-using Langscape.Shared.Implementation;
+using Langscape.Shared.Impl;
 using MediatR;
 
 namespace Application.Features.Users.Commands
@@ -27,13 +27,7 @@ namespace Application.Features.Users.Commands
         public async Task<Result<AuthUserDto>> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
             var user = await _userAuthenticator.SignIn(request.LoginDto.Email, request.LoginDto.Password);
-
-            if(user != null)
-            {
-                return Result<AuthUserDto>.Success(_userService.CreateAuthUserDto(user));
-            }
-
-            return Result<AuthUserDto>.Failure("Unauthorized").WithCode(401);
+            return Result<AuthUserDto>.Success(_userService.CreateAuthUserDto(user));
         }
     }
 }

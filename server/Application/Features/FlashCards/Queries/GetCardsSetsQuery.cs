@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -9,10 +8,11 @@ using Application.Services;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Domain.Entities;
-using Langscape.Shared.Implementation;
+using Langscape.Shared.Impl;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Repositories;
+using Shared.Common.Exceptions.Impl;
 
 namespace Application.Features.FlashCards.Commands
 {
@@ -29,19 +29,33 @@ namespace Application.Features.FlashCards.Commands
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IUserAccessor _userAccessor;
+        private readonly IUserManager _userManager;
         private readonly IFavoriteSetsService _cardsSetService;
 
-        public GetCardsSetsQueryHandler(IUnitOfWork unitOfWork, IMapper mapper, IUserAccessor userAccessor, IFavoriteSetsService cardsSetService)
+        public GetCardsSetsQueryHandler(IUnitOfWork unitOfWork, IMapper mapper, IUserAccessor userAccessor, 
+            IUserManager userManager, IFavoriteSetsService cardsSetService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _userAccessor = userAccessor;
+            _userManager = userManager;
             _cardsSetService = cardsSetService;
         }
 
 
         public async Task<Result<IReadOnlyList<GetFlashCardsSetDto>>> Handle(GetCardsSetsQuery request, CancellationToken cancellationToken)
         {
+            if((request.OnlyUserCreatedSets || request.OnlyUserFavoriteSets) && 
+                !_userAccessor.TryGetUserId(out _))
+                {
+                    throw new AuthorizationFailedException();
+                }
+
+            if(request.UserId != null && !await _userManager.IsValidUserId(request.UserId))
+            {
+                throw new NotFoundException($"User with id {request.UserId} doesn't exist");
+            }
+
             var allSetsQuery = _unitOfWork.GetRepository<FlashCardsSet>()
                 .Entities
                 .AsNoTracking();

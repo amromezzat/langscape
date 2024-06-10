@@ -25,12 +25,14 @@ namespace API.Controllers
 
         [AllowAnonymous]
         [HttpGet]
+        [HttpGet("/api/users/{userId}/flashcards")]
         public async Task<ActionResult<IResult<IReadOnlyList<GetFlashCardsSetDto>>>> GetCardsSets(CancellationToken cancellationToken, 
-            [FromQuery] string userId, [FromQuery] int maximumNumberOfWords = 3)
+            string userId, [FromQuery] int maximumNumberOfWords = 3)
         {
+            var isUserSpecific = userId != null;
             return await _mediator.Send(new GetCardsSetsQuery() { 
-                OnlyUserCreatedSets = Request.Query.ContainsKey("owned"),
-                OnlyUserFavoriteSets = Request.Query.ContainsKey("favorites"),
+                OnlyUserCreatedSets = !isUserSpecific && Request.Query.ContainsKey("owned"),
+                OnlyUserFavoriteSets = !isUserSpecific && Request.Query.ContainsKey("favorites"),
                 UserId = userId,
                 MaximumNumberOfWords = maximumNumberOfWords
             }, cancellationToken);

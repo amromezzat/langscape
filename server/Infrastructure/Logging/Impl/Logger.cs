@@ -1,12 +1,11 @@
+using NLog;
 using IExternalLogger = NLog.ILogger;
 
 namespace Infrastructure.Logging.Impl
 {
     public class Logger : ILogger
     {
-        private readonly IExternalLogger _logger;
-
-        public Logger(IExternalLogger logger) => _logger = logger;
+        private readonly IExternalLogger _logger = LogManager.GetCurrentClassLogger();
 
         public void LogDebug(string message) => _logger.Debug(message);
 

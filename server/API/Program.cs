@@ -5,7 +5,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Repositories;
 using System;
-using Microsoft.Extensions.Logging;
 using System.Threading;
 using Microsoft.AspNetCore.Identity;
 using Domain.Entities;
@@ -16,28 +15,39 @@ using Persistence.Contexts;
 using Persistence.Seeds;
 using API.Extensions;
 using APIExtensions = API.Extensions.ServiceCollectionExtensions;
+using Infrastructure.Extensions;
+using API.Common.ErrorHandling.Middlewares.Impl;
+using System.Threading.Tasks;
+using ILogger = Infrastructure.Logging.ILogger;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddApplicationLayer();
 builder.Services.AddPersistenceLayer(builder.Configuration);
 builder.Services.AddInfrastructureLayer(builder.Configuration);
 builder.Services.AddApiLayer();
-builder.Services.AddLogging();
-builder.Services.AddControllers();
+builder.Services.AddExternalLogging();
+builder.Services.AddControllers(config => {
+    config.ReturnHttpNotAcceptable = true;
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+app.UseMiddleware<ExceptionHandlerMiddleware>();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+else if(app.Environment.IsProduction())
+{
+    app.UseHsts();
 }
 
 app.UseHttpsRedirection();
@@ -49,11 +59,11 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-MigrateDatabase();
+await MigrateDatabase();
 
 app.Run();
 
-async void MigrateDatabase()
+async Task MigrateDatabase()
 {
     var scope = app.Services.CreateScope();
     var serviceProvider = scope.ServiceProvider;
@@ -69,9 +79,9 @@ async void MigrateDatabase()
         var userManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
         await UsersSeed.SeedUsers(userManager);
     }
-    catch (Exception ex)
+    catch (Exception exception)
     {
-        var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "An error occurred during migration");
+        var logger = serviceProvider.GetRequiredService<ILogger>();
+        logger.LogError($"An error occurred during migration: {exception}");
     }
 }

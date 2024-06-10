@@ -1,3 +1,4 @@
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Features.Users.Services;
@@ -5,7 +6,7 @@ using Application.Services;
 using Application.Users.Dto;
 using Domain.Entities;
 using Langscape.Shared;
-using Langscape.Shared.Implementation;
+using Langscape.Shared.Impl;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -39,11 +40,6 @@ namespace Application.Features.Users.Queries
             else if(request.Username != null) 
             {
                 user = await _userManager.GetUserByUsername(request.Username);
-            }
-
-            if(user == null) 
-            {
-                return Result<UserDto>.Failure("User not found").WithCode(404);
             }
 
             return Result<UserDto>.Success(_userService.CreateUserDto(user));
